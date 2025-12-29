@@ -1,1 +1,384 @@
-<h1>網站測試成功！如果看到這行字，代表 GitHub 設定沒問題，是之前的程式碼有錯。</h1>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yseulto Art | 審美藝術</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; background-color: #fffefc; }
+        /* 隱藏捲軸但保留功能 */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* 淡入動畫 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn { animation: fadeIn 0.4s ease-out forwards; }
+        
+        /* 頁籤選中樣式 */
+        .tab-active {
+            background-color: #fed455 !important;
+            color: white !important;
+            border-color: #fed455 !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 摺疊選單樣式 */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary ~ * { animation: fadeIn 0.3s ease-in-out; }
+        details[open] .chevron { transform: rotate(180deg); }
+    </style>
+</head>
+<body class="selection:bg-[#fed455] selection:text-white">
+
+    <div class="h-1.5 bg-gradient-to-r from-[#fed455] via-[#fee9a7] to-[#fed455]"></div>
+
+    <main class="max-w-3xl mx-auto min-h-screen bg-white shadow-xl overflow-hidden flex flex-col relative border-x border-[#fbf7e8]">
+        
+        <header class="relative pt-20 pb-12 px-6 text-center overflow-hidden bg-gradient-to-b from-[#fed455] to-[#fee9a7]">
+            <div class="relative z-10">
+                <h1 onclick="switchTab('home')" class="text-4xl md:text-5xl font-serif font-medium text-white tracking-[0.2em] mb-3 drop-shadow-md cursor-pointer hover:opacity-90 transition-opacity">
+                    Yseulto.art
+                </h1>
+                <div class="flex items-center justify-center gap-4 mb-6">
+                    <span class="h-[1px] w-8 bg-white/70"></span>
+                    <p class="text-white text-lg tracking-[0.4em] uppercase font-medium drop-shadow-md">審美藝術</p>
+                    <span class="h-[1px] w-8 bg-white/70"></span>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <a href="https://www.instagram.com/yseulto.art/" target="_blank" class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white shadow-lg hover:opacity-90 transition-all w-full sm:w-auto justify-center">
+                        <i data-lucide="instagram" class="w-5 h-5"></i> <span class="text-xs font-medium tracking-wide">INSTAGRAM</span>
+                    </a>
+                    <a href="https://lin.ee/ywqbFuu" target="_blank" class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#06C755] text-white shadow-lg hover:bg-[#05b64d] transition-all w-full sm:w-auto justify-center">
+                        <i data-lucide="message-circle" class="w-5 h-5"></i> <span class="text-xs font-medium tracking-wide">預約/諮詢</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-y border-[#fee9a7] shadow-sm">
+            <div class="flex overflow-x-auto no-scrollbar py-3 px-4 md:justify-center gap-2">
+                <button onclick="switchTab('services')" id="nav-services" class="nav-btn group flex items-center gap-2 px-4 py-2.5 rounded-full text-xs md:text-sm whitespace-nowrap border border-transparent text-[#99815c] hover:bg-[#fff9e6] transition-all">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> 服務項目
+                </button>
+                <button onclick="switchTab('pricelist')" id="nav-pricelist" class="nav-btn group flex items-center gap-2 px-4 py-2.5 rounded-full text-xs md:text-sm whitespace-nowrap border border-transparent text-[#99815c] hover:bg-[#fff9e6] transition-all">
+                    <i data-lucide="dollar-sign" class="w-3.5 h-3.5"></i> 價目表
+                </button>
+                <button onclick="switchTab('gallery')" id="nav-gallery" class="nav-btn group flex items-center gap-2 px-4 py-2.5 rounded-full text-xs md:text-sm whitespace-nowrap border border-transparent text-[#99815c] hover:bg-[#fff9e6] transition-all">
+                    <i data-lucide="image" class="w-3.5 h-3.5"></i> 作品集
+                </button>
+                <button onclick="switchTab('reviews')" id="nav-reviews" class="nav-btn group flex items-center gap-2 px-4 py-2.5 rounded-full text-xs md:text-sm whitespace-nowrap border border-transparent text-[#99815c] hover:bg-[#fff9e6] transition-all">
+                    <i data-lucide="message-square" class="w-3.5 h-3.5"></i> 好評反饋
+                </button>
+                <button onclick="switchTab('location')" id="nav-location" class="nav-btn group flex items-center gap-2 px-4 py-2.5 rounded-full text-xs md:text-sm whitespace-nowrap border border-transparent text-[#99815c] hover:bg-[#fff9e6] transition-all">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> 位置
+                </button>
+                <button onclick="switchTab('courses')" id="nav-courses" class="nav-btn group flex items-center gap-2 px-4 py-2.5 rounded-full text-xs md:text-sm whitespace-nowrap border border-transparent text-[#99815c] hover:bg-[#fff9e6] transition-all">
+                    <i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i> 課程
+                </button>
+            </div>
+        </nav>
+
+        <div class="flex-1 px-4 py-12 md:px-12 bg-white min-h-[500px]">
+            
+            <div id="tab-home" class="content-tab animate-fadeIn block">
+                <div class="bg-[#fffefb] p-8 md:p-12 shadow-sm border border-[#fee9a7]/50 text-center rounded-lg relative overflow-hidden">
+                    <h3 class="text-xl font-bold text-[#b08d55] mb-5 flex items-center justify-center gap-3 relative">
+                        <span class="w-8 h-[3px] bg-[#fed455]"></span>
+                        <span class="tracking-widest">審美藝術</span>
+                        <span class="w-8 h-[3px] bg-[#fed455]"></span>
+                    </h3>
+                    <div class="max-w-lg mx-auto space-y-6 text-[#594a42] leading-loose text-sm md:text-base tracking-wide">
+                        <p>美麗來自內心的映照，<br/>不追逐絢麗的光。</p>
+                        <p>透過細膩的技法，<br/>還原您與生俱來的從容與優雅。</p>
+                        <p class="font-serif text-[#b08d55] pt-4 tracking-wider leading-relaxed">在 Yseulto.art<br/>遇見安靜而有力量的自己</p>
+                    </div>
+                    <div class="flex justify-center gap-6 mt-10">
+                        <button onclick="switchTab('services')" class="px-8 py-2.5 border border-[#b08d55] text-[#b08d55] rounded-full text-sm tracking-widest hover:bg-[#b08d55] hover:text-white transition-all">瀏覽服務</button>
+                        <a href="https://lin.ee/ywqbFuu" target="_blank" class="px-8 py-2.5 bg-[#433422] text-[#fff9e6] rounded-full text-sm tracking-widest hover:bg-[#5e4b35] transition-all shadow-md">立即預約</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-services" class="content-tab animate-fadeIn hidden">
+                <div class="flex flex-wrap justify-center gap-2 mb-8">
+                    <button onclick="showService('rules')" class="service-btn bg-[#fed455] text-white px-4 py-1.5 rounded-full text-xs">預約須知</button>
+                    <button onclick="showService('eyebrows')" class="service-btn bg-white text-[#99815c] border border-[#fee9a7] px-4 py-1.5 rounded-full text-xs">精緻霧眉</button>
+                    <button onclick="showService('lips')" class="service-btn bg-white text-[#99815c] border border-[#fee9a7] px-4 py-1.5 rounded-full text-xs">唇色校正</button>
+                    <button onclick="showService('eyeliner')" class="service-btn bg-white text-[#99815c] border border-[#fee9a7] px-4 py-1.5 rounded-full text-xs">美瞳眼線</button>
+                    <button onclick="showService('lashes')" class="service-btn bg-white text-[#99815c] border border-[#fee9a7] px-4 py-1.5 rounded-full text-xs">睫毛管理</button>
+                </div>
+
+                <div id="service-content" class="bg-[#fffefb] p-6 shadow-sm border border-[#fee9a7]/50 rounded-lg">
+                    <div id="content-rules">
+                        <h3 class="text-center text-xl font-bold text-[#b08d55] mb-6">預約與店內守則</h3>
+                        <ul class="space-y-3 text-sm text-[#4b4b4b]">
+                            <li class="flex gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#fed455] shrink-0"></span>採全預約制。建議提前一個月預約。</li>
+                            <li class="flex gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#fed455] shrink-0"></span>僅提供年滿 18 歲之顧客。</li>
+                            <li class="flex gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#fed455] shrink-0"></span>攜伴限一位，請提前告知。</li>
+                            <li class="flex gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#fed455] shrink-0"></span>若曾有臨時取消紀錄，下次需預付定金。</li>
+                        </ul>
+                        <div class="mt-8 text-center">
+                            <p class="text-sm text-[#594a42] mb-4">請複製以下格式傳送至官方 LINE：</p>
+                            <div class="bg-[#fff9e6] p-4 rounded text-left text-sm text-[#594a42] inline-block w-full max-w-xs">
+                                <p>您的姓名：</p>
+                                <p>電話：</p>
+                                <p>預約項目：</p>
+                                <p>理想時間：</p>
+                            </div>
+                            <br>
+                            <a href="https://lin.ee/ywqbFuu" target="_blank" class="inline-block mt-4 px-8 py-2 bg-[#06C755] text-white rounded-full text-sm">LINE 預約</a>
+                        </div>
+                    </div>
+                    
+                    <div id="content-eyebrows" class="hidden">
+                        <h3 class="text-center text-xl font-bold text-[#b08d55] mb-6">精緻霧眉</h3>
+                        <details class="border-b border-[#fee9a7] py-4 group cursor-pointer">
+                            <summary class="flex justify-between items-center font-medium text-[#433422]">Q：什麼是精緻半永久霧眉？<i data-lucide="chevron-down" class="chevron w-4 h-4 text-[#fed455] transition-transform"></i></summary>
+                            <p class="mt-3 text-sm text-[#594a42] leading-relaxed">我們採用獨家技術，打造如同眉粉輕掃過的自然霧感。保證後期不變藍、不變紅。</p>
+                        </details>
+                        <details class="border-b border-[#fee9a7] py-4 group cursor-pointer">
+                            <summary class="flex justify-between items-center font-medium text-[#433422]">Q：會痛嗎？<i data-lucide="chevron-down" class="chevron w-4 h-4 text-[#fed455] transition-transform"></i></summary>
+                            <p class="mt-3 text-sm text-[#594a42] leading-relaxed">操作過程舒適溫和，痛感極低，許多客人在過程中會舒服到睡著。</p>
+                        </details>
+                         <details class="border-b border-[#fee9a7] py-4 group cursor-pointer">
+                            <summary class="flex justify-between items-center font-medium text-[#433422]">Q：多久需要補色？<i data-lucide="chevron-down" class="chevron w-4 h-4 text-[#fed455] transition-transform"></i></summary>
+                            <p class="mt-3 text-sm text-[#594a42] leading-relaxed">本店提供首次操作後 3 個月內免費補色一次。一般建議滿一個月後回來觀察留色狀況。</p>
+                        </details>
+                         <div class="mt-6 bg-[#fffbf0] p-4 rounded border border-[#fee9a7]">
+                            <p class="text-sm text-[#8a6d3b]">⚠️ <strong>注意：</strong> 蟹足腫、糖尿病、懷孕期間等狀況請務必事先告知。</p>
+                        </div>
+                    </div>
+
+                    <div id="content-lips" class="hidden">
+                         <h3 class="text-center text-xl font-bold text-[#b08d55] mb-6">唇色校正</h3>
+                         <details class="border-b border-[#fee9a7] py-4 group cursor-pointer">
+                            <summary class="flex justify-between items-center font-medium text-[#433422]">Q：霧唇可以維持多久？<i data-lucide="chevron-down" class="chevron w-4 h-4 text-[#fed455] transition-transform"></i></summary>
+                            <p class="mt-3 text-sm text-[#594a42] leading-relaxed">一般約可維持 3-5 年，視個人代謝而定。</p>
+                        </details>
+                        <details class="border-b border-[#fee9a7] py-4 group cursor-pointer">
+                            <summary class="flex justify-between items-center font-medium text-[#433422]">Q：烏唇可以做嗎？<i data-lucide="chevron-down" class="chevron w-4 h-4 text-[#fed455] transition-transform"></i></summary>
+                            <p class="mt-3 text-sm text-[#594a42] leading-relaxed">非常建議！我們會先進行轉色處理，將深色淡化還原成健康粉嫩底色。</p>
+                        </details>
+                    </div>
+
+                    <div id="content-eyeliner" class="hidden">
+                         <h3 class="text-center text-xl font-bold text-[#b08d55] mb-6">美瞳眼線</h3>
+                         <p class="text-sm text-[#594a42] mb-4 text-center">填補睫毛空隙，閉眼無痕，睜眼有神。</p>
+                         <details class="border-b border-[#fee9a7] py-4 group cursor-pointer">
+                            <summary class="flex justify-between items-center font-medium text-[#433422]">Q：有接睫毛可以做嗎？<i data-lucide="chevron-down" class="chevron w-4 h-4 text-[#fed455] transition-transform"></i></summary>
+                            <p class="mt-3 text-sm text-[#594a42] leading-relaxed">不可以，請務必先卸除假睫毛，以免影響操作。</p>
+                        </details>
+                    </div>
+
+                    <div id="content-lashes" class="hidden">
+                         <h3 class="text-center text-xl font-bold text-[#b08d55] mb-6">睫毛管理</h3>
+                         <p class="text-sm text-[#594a42] mb-4 text-center">非嫁接、非傳統燙睫毛。使用真睫毛調整毛流，自然捲翹。</p>
+                         <details class="border-b border-[#fee9a7] py-4 group cursor-pointer">
+                            <summary class="flex justify-between items-center font-medium text-[#433422]">Q：可以維持多久？<i data-lucide="chevron-down" class="chevron w-4 h-4 text-[#fed455] transition-transform"></i></summary>
+                            <p class="mt-3 text-sm text-[#594a42] leading-relaxed">約 1.5 ~ 2 個月，隨睫毛生長週期自然代謝。</p>
+                        </details>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-pricelist" class="content-tab animate-fadeIn hidden">
+                <div class="text-center mb-8">
+                     <h3 class="text-xl font-bold text-[#b08d55] inline-block border-b-2 border-[#fed455] pb-2">價目表</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-[#fffefb] p-6 shadow-sm border border-[#fee9a7]/50 rounded-lg">
+                        <h4 class="text-lg font-bold text-[#b08d55] mb-4">眉部服務</h4>
+                        <div class="flex justify-between items-end border-b border-[#fee9a7]/30 pb-2 mb-2">
+                            <div><span class="text-[#4b4b4b] font-medium">精緻霧眉</span><p class="text-xs text-[#99815c]">含三個月內補色</p></div>
+                            <span class="text-[#b08d55] font-serif">$ 8,800</span>
+                        </div>
+                        <div class="flex justify-between items-end border-b border-[#fee9a7]/30 pb-2 mb-2">
+                            <div><span class="text-[#4b4b4b] font-medium">舊底改眉</span><p class="text-xs text-[#99815c]">需評估</p></div>
+                            <span class="text-[#b08d55] font-serif">+ $ 500</span>
+                        </div>
+                    </div>
+                    <div class="bg-[#fffefb] p-6 shadow-sm border border-[#fee9a7]/50 rounded-lg">
+                        <h4 class="text-lg font-bold text-[#b08d55] mb-4">唇部服務</h4>
+                        <div class="flex justify-between items-end border-b border-[#fee9a7]/30 pb-2 mb-2">
+                            <div><span class="text-[#4b4b4b] font-medium">透亮霧唇</span><p class="text-xs text-[#99815c]">含半年內調整</p></div>
+                            <span class="text-[#b08d55] font-serif">$ 9,800</span>
+                        </div>
+                        <div class="flex justify-between items-end border-b border-[#fee9a7]/30 pb-2 mb-2">
+                            <div><span class="text-[#4b4b4b] font-medium">光感淡色</span><p class="text-xs text-[#99815c]">調整暗沈/非上色</p></div>
+                            <span class="text-[#b08d55] font-serif">$ 6,800</span>
+                        </div>
+                    </div>
+                    <div class="bg-[#fffefb] p-6 shadow-sm border border-[#fee9a7]/50 rounded-lg">
+                        <h4 class="text-lg font-bold text-[#b08d55] mb-4">眼部服務</h4>
+                        <div class="flex justify-between items-end border-b border-[#fee9a7]/30 pb-2 mb-2">
+                            <div><span class="text-[#4b4b4b] font-medium">美瞳眼線</span></div>
+                            <span class="text-[#b08d55] font-serif">$ 5,800</span>
+                        </div>
+                    </div>
+                     <div class="bg-[#fffefb] p-6 shadow-sm border border-[#fee9a7]/50 rounded-lg">
+                        <h4 class="text-lg font-bold text-[#b08d55] mb-4">睫毛服務</h4>
+                        <div class="flex justify-between items-end border-b border-[#fee9a7]/30 pb-2 mb-2">
+                            <div><span class="text-[#4b4b4b] font-medium">睫毛管理</span></div>
+                            <span class="text-[#b08d55] font-serif">$ 1,200</span>
+                        </div>
+                    </div>
+                </div>
+                 <div class="mt-8 text-center bg-[#fff9e6] p-4 rounded-lg">
+                    <p class="text-sm text-[#8a6d3b]">※ 舊客單次補色享優惠價，詳情請諮詢官方 LINE。</p>
+                </div>
+            </div>
+
+            <div id="tab-gallery" class="content-tab animate-fadeIn hidden">
+                 <div class="text-center mb-8">
+                     <h3 class="text-xl font-bold text-[#b08d55] inline-block border-b-2 border-[#fed455] pb-2">作品鑑賞</h3>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <a href="https://drive.google.com/thumbnail?id=1bfZJNDb93A38NAWmJtGvEElqzfnvWrQD&sz=w1920" target="_blank" class="block aspect-[4/5] overflow-hidden rounded bg-gray-100 hover:opacity-90 transition">
+                        <img src="https://drive.google.com/thumbnail?id=1bfZJNDb93A38NAWmJtGvEElqzfnvWrQD&sz=w600" class="w-full h-full object-cover">
+                    </a>
+                    <a href="https://drive.google.com/thumbnail?id=19lI68ZqzRettgVT4euBnU7CLSjZuC-zj&sz=w1920" target="_blank" class="block aspect-[4/5] overflow-hidden rounded bg-gray-100 hover:opacity-90 transition">
+                        <img src="https://drive.google.com/thumbnail?id=19lI68ZqzRettgVT4euBnU7CLSjZuC-zj&sz=w600" class="w-full h-full object-cover">
+                    </a>
+                    <a href="https://drive.google.com/thumbnail?id=1Dd0Ow_KVWH1JtVxrA50UKqrSHJIo2_zE&sz=w1920" target="_blank" class="block aspect-[4/5] overflow-hidden rounded bg-gray-100 hover:opacity-90 transition">
+                        <img src="https://drive.google.com/thumbnail?id=1Dd0Ow_KVWH1JtVxrA50UKqrSHJIo2_zE&sz=w600" class="w-full h-full object-cover">
+                    </a>
+                    <a href="https://drive.google.com/thumbnail?id=1SWfLsXxHUnQEgdzZJ474jia4h8lSdsKN&sz=w1920" target="_blank" class="block aspect-[4/5] overflow-hidden rounded bg-gray-100 hover:opacity-90 transition">
+                        <img src="https://drive.google.com/thumbnail?id=1SWfLsXxHUnQEgdzZJ474jia4h8lSdsKN&sz=w600" class="w-full h-full object-cover">
+                    </a>
+                    <a href="https://drive.google.com/thumbnail?id=11iAdaxsCIs4iPIX1OrkIFu6hiJts_OHz&sz=w1920" target="_blank" class="block aspect-[4/5] overflow-hidden rounded bg-gray-100 hover:opacity-90 transition">
+                        <img src="https://drive.google.com/thumbnail?id=11iAdaxsCIs4iPIX1OrkIFu6hiJts_OHz&sz=w600" class="w-full h-full object-cover">
+                    </a>
+                    <a href="https://drive.google.com/thumbnail?id=1SgpC2Ni2AAUbxwi-D36zJMpWOpe30d0M&sz=w1920" target="_blank" class="block aspect-[4/5] overflow-hidden rounded bg-gray-100 hover:opacity-90 transition">
+                        <img src="https://drive.google.com/thumbnail?id=1SgpC2Ni2AAUbxwi-D36zJMpWOpe30d0M&sz=w600" class="w-full h-full object-cover">
+                    </a>
+                </div>
+                 <div class="text-center mt-8">
+                     <a href="https://www.instagram.com/yseulto.art/" target="_blank" class="text-[#b08d55] text-sm border-b border-[#b08d55] pb-1 hover:text-[#8a6d3b]">查看更多 Instagram 作品</a>
+                 </div>
+            </div>
+
+             <div id="tab-reviews" class="content-tab animate-fadeIn hidden">
+                 <div class="grid gap-4 md:grid-cols-2">
+                     <div class="bg-[#fffefb] p-6 border border-[#f0eadd] rounded-lg shadow-sm">
+                         <div class="flex items-center gap-2 mb-2">
+                             <div class="w-8 h-8 rounded-full bg-[#fed455] text-white flex items-center justify-center font-bold">E</div>
+                             <span class="font-bold text-[#433422]">Emily Chen</span>
+                         </div>
+                         <div class="flex text-[#fbbc05] mb-2">★★★★★</div>
+                         <p class="text-sm text-[#594a42]">老師非常細心，溝通眉型的時候很有耐心，成果超級自然！</p>
+                     </div>
+                      <div class="bg-[#fffefb] p-6 border border-[#f0eadd] rounded-lg shadow-sm">
+                         <div class="flex items-center gap-2 mb-2">
+                             <div class="w-8 h-8 rounded-full bg-[#fed455] text-white flex items-center justify-center font-bold">S</div>
+                             <span class="font-bold text-[#433422]">Sarah Lin</span>
+                         </div>
+                         <div class="flex text-[#fbbc05] mb-2">★★★★★</div>
+                         <p class="text-sm text-[#594a42]">本來很怕痛，結果過程幾乎沒感覺。現在早上起床氣色都很好。</p>
+                     </div>
+                 </div>
+             </div>
+
+             <div id="tab-location" class="content-tab animate-fadeIn hidden">
+                  <div class="bg-[#fffefb] border border-[#fee9a7] rounded-lg overflow-hidden">
+                       <iframe src="https://maps.google.com/maps?q=桃園市領航南路三段&t=&z=15&ie=UTF8&iwloc=&output=embed" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                       <div class="p-6">
+                           <h4 class="font-bold text-[#433422] mb-2"><i data-lucide="map-pin" class="inline w-4 h-4 mr-1"></i> 工作室地址</h4>
+                           <p class="text-sm text-[#594a42] mb-4">桃園市領航南路三段 (詳細地址預約後告知)</p>
+                           
+                           <h4 class="font-bold text-[#433422] mb-2"><i data-lucide="train" class="inline w-4 h-4 mr-1"></i> 交通資訊</h4>
+                           <p class="text-sm text-[#594a42]">桃園高鐵站、機場捷運 A18 站，步行約 10 分鐘</p>
+                       </div>
+                  </div>
+             </div>
+
+             <div id="tab-courses" class="content-tab animate-fadeIn hidden">
+                 <div class="bg-[#fffefb] p-8 text-center border border-[#fee9a7] rounded-lg">
+                      <i data-lucide="graduation-cap" class="w-12 h-12 text-[#b08d55] mx-auto mb-4"></i>
+                      <h3 class="text-xl font-bold text-[#b08d55] mb-6">教學課程</h3>
+                      <div class="space-y-6 text-left max-w-md mx-auto">
+                          <div class="border-b border-[#fee9a7]/30 pb-4">
+                              <h4 class="font-bold text-[#433422] mb-2">新手零基礎霧眉課程</h4>
+                              <p class="text-sm text-[#594a42] leading-relaxed">不只是教技術，更教妳觀察骨骼與氣韻。省去自我摸索的撞牆期。</p>
+                          </div>
+                          <div>
+                              <h4 class="font-bold text-[#433422] mb-2">睫毛捲翹管理課程</h4>
+                              <p class="text-sm text-[#594a42] leading-relaxed">一日專修，系統化拆解手法，快速掌握高回客率技術。</p>
+                          </div>
+                      </div>
+                      <a href="https://lin.ee/ywqbFuu" target="_blank" class="inline-block mt-8 px-8 py-2.5 bg-[#433422] text-[#fff9e6] rounded-full text-sm tracking-widest hover:bg-[#b08d55] transition-all">諮詢課程</a>
+                 </div>
+             </div>
+
+        </div>
+
+        <footer class="bg-[#fff9e6] text-[#99815c] py-8 text-center border-t border-[#fee9a7]">
+            <p class="font-serif text-lg tracking-widest">Yseulto.art</p>
+            <p class="text-xs uppercase tracking-[0.2em] opacity-60 mt-2">© 2025 All Rights Reserved.</p>
+        </footer>
+
+    </main>
+
+    <script>
+        // 初始化 Icons
+        lucide.createIcons();
+
+        function switchTab(tabId) {
+            // 1. 隱藏所有內容
+            document.querySelectorAll('.content-tab').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('block');
+            });
+            
+            // 2. 移除所有按鈕的 active 狀態
+            document.querySelectorAll('.nav-btn').forEach(el => {
+                el.classList.remove('tab-active');
+                el.classList.remove('text-white');
+                el.classList.add('text-[#99815c]');
+            });
+
+            // 3. 顯示目標內容
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            document.getElementById('tab-' + tabId).classList.add('block');
+
+            // 4. 設定按鈕 active 狀態 (如果是 home 就不設定導覽列)
+            if(tabId !== 'home') {
+                const btn = document.getElementById('nav-' + tabId);
+                if(btn) {
+                    btn.classList.add('tab-active');
+                    btn.classList.remove('text-[#99815c]');
+                }
+            }
+            
+            // 5. 滾動到頂部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showService(serviceId) {
+            // 隱藏所有服務內容
+            const contents = ['rules', 'eyebrows', 'lips', 'eyeliner', 'lashes'];
+            contents.forEach(id => {
+                document.getElementById('content-' + id).classList.add('hidden');
+            });
+            // 顯示選中的服務
+            document.getElementById('content-' + serviceId).classList.remove('hidden');
+            
+            // 更新按鈕樣式
+            document.querySelectorAll('.service-btn').forEach(btn => {
+                btn.classList.remove('bg-[#fed455]', 'text-white');
+                btn.classList.add('bg-white', 'text-[#99815c]');
+            });
+            event.target.classList.remove('bg-white', 'text-[#99815c]');
+            event.target.classList.add('bg-[#fed455]', 'text-white');
+        }
+    </script>
+</body>
+</html>
