@@ -1,0 +1,1586 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2487.6">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">import React, { useState, useEffect, useCallback } from 'react';</p>
+<p class="p1">import {<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">  </span>Instagram, Clock, ShieldAlert, ChevronRight, ChevronDown, ChevronUp, ChevronLeft,</p>
+<p class="p1"><span class="Apple-converted-space">  </span>Menu, X, Image as ImageIcon, PlayCircle, Facebook, MessageSquare,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">  </span>MapPin as MapPinIcon, ClipboardList, Eye, GraduationCap, ShoppingBag,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">  </span>Sparkles, DollarSign, FileText, Home, HelpCircle, Video, Star, Copy, ThumbsUp<span class="Apple-converted-space"> </span></p>
+<p class="p1">} from 'lucide-react';</p>
+<p class="p2"><br></p>
+<p class="p1">// ------------------- 自定義 Icon 組件 -------------------</p>
+<p class="p2"><br></p>
+<p class="p1">const GoogleIcon = ({ className }) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;svg viewBox="0 0 24 24" className={className} xmlns="http://www.w3.org/2000/svg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/svg&gt;</p>
+<p class="p1">);</p>
+<p class="p2"><br></p>
+<p class="p1">const LineIcon = ({ className = "w-6 h-6" }) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;svg viewBox="0 0 24 24" fill="currentColor" className={className} xmlns="http://www.w3.org/2000/svg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;path d="M21.6 10.7C21.6 5.9 17.3 2 12 2C6.7 2 2.4 5.9 2.4 10.7C2.4 14.9 6.1 18.5 11 19.2C11.3 19.3 11.5 19.4 11.6 19.8C11.7 20.2 11.6 20.8 11.5 21.3C11.5 21.3 11.4 22.3 11.3 22.5C11.2 22.9 11 23.6 11.7 23.5C12.3 23.4 15.6 21.4 17.7 19.9C17.7 19.9 17.7 19.9 17.8 19.9C20.1 18 21.6 14.6 21.6 10.7Z" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/svg&gt;</p>
+<p class="p1">);</p>
+<p class="p2"><br></p>
+<p class="p1">const EyebrowIcon = ({ className }) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;path d="M7 14c2-4 5-6 10-4" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;path d="M3 13c3-5 8-7 14-4" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;path d="M11 10c1-1 3-2 5-1" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/svg&gt;</p>
+<p class="p1">);</p>
+<p class="p2"><br></p>
+<p class="p1">const LipsIcon = ({ className }) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;path d="M12 16c-3 0-5-2-8-3 1-2 4-4 8-4s7 2 8 4c-3 1-5 3-8 3z" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;path d="M12 9c-2 0-4 1-5.5 2C8 12.5 10 14 12 14s4-1.5 5.5-3C16 10 14 9 12 9z" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/svg&gt;</p>
+<p class="p1">);</p>
+<p class="p2"><br></p>
+<p class="p1">// ------------------- 資料內容設定 -------------------</p>
+<p class="p2"><br></p>
+<p class="p1">const SHOP_RULES = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "店內規則",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>content: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ text: "採全預約制。建議提前一個月預約以保留理想時段，最晚請於前一日預約，當日可視情況詢問空檔。", highlight: false },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ text: "半永久定妝紋繡服務僅提供年滿 18 歲之顧客，未滿者恕無法受理。", highlight: false },<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ text: "攜伴限一位，請提前告知。", highlight: false },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ text: "若攜伴，陪同者請於沙發區等待；請勿近距離觀看以免影響操作。", highlight: false },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ text: "若曾有臨時取消或未到紀錄，下次預約需預付 $500 定金。", highlight: false },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ text: "累計兩次臨時取消或無故未到，本店將不再受理預約，敬請見諒。", highlight: false },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ text: "預約保留 15 分鐘，遲到且未事先聯繫視同未到並取消預約。", highlight: false },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ text: "更改或取消預約請至少提前 3 天通知，定金可全額退還。", highlight: false },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ text: "美容空間禁止攜帶重口味食物及寵物。", highlight: false },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">];</p>
+<p class="p2"><br></p>
+<p class="p1">// Q&amp;A - 霧眉</p>
+<p class="p1">const EYEBROW_QA_LIST = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：什麼是「精緻半永久霧眉」？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"我們採用審美藝術獨家半永久定妝技術，使用檢驗合格的天然植物色乳，將色乳輕柔定色於皮膚合理皮層，打造出如同眉粉輕掃過的自然霧感。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"區別於傳統紋眉，半永久霧眉後期保證「不變藍、不變橘紅、不卡色」。隨時間及皮膚自然代謝淡化，讓您能依據流行趨勢或風格變化靈活調整眉型。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：霧眉會痛嗎？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"操作過程舒適溫和，痛感極低。我們注重客人的舒適度，大部分客人僅會感覺到皮膚被輕觸，許多客人在過程中甚至能舒服到睡著。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：做完會有尷尬期（蠟筆小新）嗎？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"審美藝術採用最新的輕柔手法技術，施作當下即自然，告別傳統粗黑尷尬期與厚重結痂。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"恢復期間（約 7 天）僅會有細微皮屑脫落，完全不影響日常生活與上班。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：霧眉後可以碰水或化妝嗎？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"操作 2 小時後即可碰水（洗臉時請避開眉毛搓揉）。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"眉毛以外的部位可以正常化妝，卸妝時請小心避開眉毛區域即可。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"眉毛恢復期結束後，可自由使用眉粉或是眉筆。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：半永久霧眉可以維持多久？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"一般約可維持 1～2 年。實際留色時間會依據「個人膚質」（油性肌膚代謝較快）、「新陳代謝速度」及「日常保養習慣」而有所不同。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：多久需要回去補色呢？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"本店提供「首次操作後 3個月內免費補色一次」。建議於操作滿一個月後，觀察皮膚留色狀況並預約補色。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"由於每個人皮膚吸收與代謝程度不同，第一次操作主要為測試皮膚留色度；第二次補色則能針對顏色與眉型細節進行微調。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"完成補色後，才算是一次完整的霧眉定妝，能讓整體效果更完美、持久。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：之前有在其他店做過霧眉，還可以操作嗎？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"若您有舊的眉底（底色），預約前請務必先傳送「原相機、無濾鏡」的清晰眉毛照片供我們評估。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"若底色過深、變色（紅/藍眉）或形狀不對稱嚴重，可能需先進行轉色或除色處理，無法直接覆蓋。若評估後可直接操作，將依「改眉」項目計費。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：霧眉顏色該如何挑選？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"我們會依據您的「原生眉毛顏色」、「瞳孔顏色」、「膚色」以及平日的「妝容習慣/髮色」進行綜合評估。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"操作前會調配專屬色乳，並試色於皮膚上供您參考，溝通確認滿意後才會進行操作，打造最適合您的自然眉色。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：在本店操作回去不滿意怎麼辦？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"美感是主觀的，因此我們極度重視「術前諮詢與設計」。操作前會花費充分時間溝通眉型與顏色，務必在您確認滿意後才會開始施作。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"若回家後對眉型或顏色有微調需求，請放心，這些都可以與我們聯繫溝通協調，並在補色微調進行的調整，讓成果更貼近您的理想。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">];</p>
+<p class="p2"><br></p>
+<p class="p1">const EYEBROW_INFO = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "施作前保養與準備",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>sections: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ subtitle: "施作前一週", items: ["請暫停使用酸類產品（果酸、A 酸、水楊酸等）及去角質，避免肌膚敏感或刺激。"] },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ subtitle: "施作前三天", items: ["多補充水分，加強保濕（可敷保濕面膜），避免眉毛乾裂影響上色。", "避免飲酒與熬夜，維持良好作息與身體狀態。"] },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ subtitle: "施作前一個月", items: ["請避開任何醫美療程，如雷射、額頭或眼周注射類項目。", "請暫勿修剪眉毛雜毛，以利依自然眉型進行整體設計。"] }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "健康狀況與禁忌",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>note: "如有以下情況，請務必於預約前主動告知，經評估後可能不建議或無法進行操作：",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>items: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"心臟疾病、糖尿病",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"懷孕期間",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"B 型肝炎、血液傳染性疾病",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"紅斑性狼瘡、憂鬱症、完美主義者",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"嚴重蟹足腫體質、疤痕肌",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"嚴重過敏性肌膚"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>],</p>
+<p class="p1"><span class="Apple-converted-space">    </span>warning: "⚠️ 若未事先告知相關健康狀況，導致術後狀況或效果不如預期，將以實際評估結果為準，恕無法作為後續爭議依據。"</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "皮膚狀況與留色",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>items: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"眉毛部位若有傷口，或痘痘超過三顆，須待恢復完成後方可施作。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"服用 A 酸期間會影響留色效果，建議暫停一個月後再進行操作。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"痘痘肌、疤痕肌、過敏性肌膚、嚴重油性肌膚、酒糟肌脂漏性皮膚炎等，肌膚類型因皮脂分泌，修復能力或代謝速度不同，留色率與呈色效果有機會較弱。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "術後居家護理與注意事項",<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>items: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"詳細保養方式將於現場提供完整解說教學。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"操作 2 小時後即可碰水清潔，洗臉時請避開眉毛部位搓揉。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"日常保養品請避開眉毛區域；敷面膜時建議將眉毛部位剪開或避開。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"修復期間（約一週）請暫停泡溫泉、游泳，並避免大量流汗或處於高溫環境（如烤箱、蒸氣室）。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"一個月內眉毛部位請勿進行染眉，並暫停使用美白或酸類保養品（如 A 酸、果酸、杏仁酸等）。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"恢復期間請勿摳抓撕除眉毛部位的結痂或皮屑，以免影響留色效果。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"若有安排醫美雷射療程，建議與霧眉間隔 4 週以上，以免影響留色；若為溫和保養療程，請務必告知操作人員避開眉毛區域。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"返家後如有任何疑問，歡迎隨時透過 LINE 聯繫諮詢！"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">];</p>
+<p class="p2"><br></p>
+<p class="p1">// Q&amp;A - 唇部</p>
+<p class="p1">const LIPS_QA_LIST = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：霧唇與光感淡色的差異？以及怎麼選擇？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"霧唇（透亮霧唇）：目標是打造像塗了潤色護唇膏的妝感，改善蒼白或暗沈，讓嘴唇有氣色。適合想要有妝感、不想擦口紅的人。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"光感淡色：專門針對嚴重烏唇、黑唇或卡色進行「轉色」處理，目標是將深色淡化還原成健康的粉嫩底色，不強調上色。適合唇色極深、想先改善底色的人。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：什麼是霧唇？霧唇能修飾什麼困擾？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"採用通透自然的定妝技法，非傳統「填滿色塊」的方式，做完呈現如同塗了潤色護唇膏般自然且粉嫩好氣色。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"霧唇能修飾「唇色暗沈」、「氣色蒼白」或「唇色不均」的狀況，也能微調唇形，讓雙唇隨時保持紅潤氣色，素顏也不顯病氣。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：霧唇能維持多久？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"一般約可維持 3-5 年。實際留色時間會依據個人新陳代謝速度及日常保養習慣而有所不同。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：多久回去補色呢？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"我們有包含6個月內唇色調整。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"之後依照個人想要紅潤顯色的程度可以半年或一年定期回來補色，顏色疊加也會更顯色和持久。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：唇色很深（烏唇）可以做嗎？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"非常建議做霧唇來調整唇色，關於暗沈唇色的調整，需要時間的醞釀。黑唇或烏唇在操作後，約需等待 1 至 1.5 個月，色彩才會逐漸轉色平衡，展現出通透的質感。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：霧唇會腫或痛嗎？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"過程舒適度高，大多數客人僅感覺到輕微震動。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"少部分客人術後可能會有些微腫脹感（類似剛哭過或吃完麻辣鍋的感覺），約 1-3 天內會自然消退，隔天即可正常上班。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：需要休息幾天？恢復期多久？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"不需要請假休息。恢復期約 3-5 天，期間會有像嘴唇乾裂的薄皮脫落，請勿摳撕，讓其自然代謝即可。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"脫皮完成後顏色會變淡、更自然通透。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：可以指定口紅色號嗎？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"霧唇是一門調和的藝術。這是霧唇顏色與原有唇色的融合技術。由於每位貴賓的原生唇底色不同，我們無法像選購口紅般指定特定色號，而是根據您目前唇色的狀況來做調整，調配出最適合您的專屬色調。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">];</p>
+<p class="p2"><br></p>
+<p class="p1">const LIPS_INFO = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "施作前準備與保養",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>sections: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ subtitle: "施作前三天", items: ["請避免飲酒、熬夜，保持良好的作息和健康狀態。", "請暫停使用任何含有刺激性成分的唇部產品（如去角質、酸類）。", "請多喝水，並勤擦護唇膏做好保濕，晚上可使用凡士林厚敷、使用保濕唇膜，避免乾燥脫皮。"] },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ subtitle: "皮膚與醫美狀況", items: ["若有唇皰疹體質（曾經長過即算），建議預先至藥局購買口服藥，於施作前服用，以預防免疫力下降時誘發。", "若近期進行過唇部醫美療程（如玻尿酸填充），請務必確認已完全修復定型，再安排霧唇。"] }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "健康狀況禁忌",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>note: "為確保您的安全與成效，若有以下狀況，請斟酌或暫緩預約：",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>items: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"糖尿病",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"B 型肝炎、血液傳染疾病",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"紅斑性狼瘡",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"臉部蟹足腫",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"憂鬱症",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"完美主義者"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>],</p>
+<p class="p1"><span class="Apple-converted-space">    </span>warning: "⚠️ 請務必誠實告知健康狀況，若因未告知導致術後恢復不如預期，本店恕難負責。"</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "術後居家護理",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>items: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"術後 3 天內飲食建議避開滾燙熱湯、海鮮及刺激辛辣食物。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"餐後請以飲用水漱口，輕輕帶走食物殘渣，保持唇部潔淨，並隨時補擦修護霜維持滋潤。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"皮屑脫落期間請勿用手撕除，以免造成顏色不均或受傷，請耐心等待其自然代謝。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">];</p>
+<p class="p2"><br></p>
+<p class="p1">// Q&amp;A - 眼線</p>
+<p class="p1">const EYELINER_QA_LIST = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：什麼是美瞳眼線？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"美瞳眼線是操作在睫毛根部，填補睫毛空隙的半永久自然眼線。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"睜眼時卻能感覺睫毛變濃密、眼神更放大深邃有神，呈現最自然的「偽素顏」效果。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：做眼線會痛嗎？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"近無痛感，大多客人都是舒服睡著。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：我有接睫毛可以做眼線嗎？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"不可以。請務必在預約前「卸除」假睫毛，以免影響操作視野及留色效果。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"操作完眼線後，建議等待 1 週皮屑完全脫落後，再進行接睫毛。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">];</p>
+<p class="p2"><br></p>
+<p class="p1">const EYELINER_INFO = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "施作前保養與準備",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>sections: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ subtitle: "施作前三天", items: ["避免喝酒和熬夜，保持良好的作息和健康狀態。"] },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ subtitle: "皮膚與眼睛狀況", items: ["若剛做完眼部手術，請至少修復三個月後再進行霧眼線。", "做眼線前請勿嫁接睫毛，如需卸除，需支付卸除費 300 元。", "若有眼睛不適、長針眼，請待修復完畢後再操作。", "操作當天請勿配戴隱形眼鏡，建議配戴一般眼鏡前來。"] }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "健康狀況限制",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>note: "若有以下健康狀況，請勿進行操作：",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>items: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"糖尿病",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"B 型肝炎、血液傳染疾病",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"紅斑性狼瘡",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"臉部蟹足腫",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"憂鬱症",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"完美主義者"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>],</p>
+<p class="p1"><span class="Apple-converted-space">    </span>warning: "⚠️ 請務必誠實告知健康狀況。"</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "其他注意事項",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>items: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"每位客人的眼型、眼皮皺摺不會完全對稱，我們能做到協調但無法完全一模一樣，接受此情況才預約哦！"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "術後保養",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>items: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"術後 24 小時內眼部請勿碰水。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"隔天起床若有些微浮腫為正常現象，可冰敷舒緩。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"一週內暫停使用睫毛膏、眼線筆及眼部卸妝油，避免影響留色。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">];</p>
+<p class="p2"><br></p>
+<p class="p1">// Q&amp;A - 睫毛</p>
+<p class="p1">const LASHES_QA_LIST = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：什麼是睫毛管理？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"這不是接睫毛，也不是傳統燙睫毛。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"我們使用自己的真睫毛，透過含有營養成分的產品，調整毛流方向並維持。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"過程舒適，不會有異物感及不適感。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"同時進行深層護髮，讓原生睫毛呈現自然的捲翹弧度，眼睛瞬間放大有神。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：做完可以畫眼妝跟刷睫毛膏嗎？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"可以的！這正是睫毛管理的優點之一。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"完成後您可以正常化妝、刷睫毛膏及卸妝（包含使用卸妝油），完全不影響生活習慣，且有了捲翹的基礎，刷上睫毛膏後效果會更驚艷。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：可以維持多久？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"效果約可維持一個半至兩個月。實際時間會依據每個人睫毛的生長週期與代謝速度而定。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"當新睫毛長出來、舊睫毛代謝掉後，捲翹度會自然恢復原狀。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>question: "Q：睫毛很短或很稀疏可以做嗎？",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>answer: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"可以的。只要有睫毛都能操作，操作後視覺上會有延長的效果。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"但若睫毛過於受損或空洞太大，效果可能會受限，建議可先傳照片諮詢。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">];</p>
+<p class="p2"><br></p>
+<p class="p1">const LASHES_INFO = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "注意事項與保養",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>items: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"請確認無嫁接睫毛（若需現場卸除，需支付卸除費）。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"建議素眼前往。若有眼妝，操作過程可能會破壞妝容，如後續有行程請自備補妝產品。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"操作全程請眼睛放鬆，避免用力閉眼、抖動則會影響操作，當作在睡覺就可以了☺️",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"當天施作完先避免刷睫毛膏。",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"術後請避免搓揉眼睛，並請勿使用睫毛夾，這樣能讓捲翹度維持得更好、更持久。"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">];</p>
+<p class="p2"><br></p>
+<p class="p1">const PRICE_LIST = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>category: "眉",<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>items: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "精緻霧眉", price: "$ 8,800", note: "含三個月內補色一次" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "他店舊底改眉", price: "+ $ 500", note: "需拍照回傳評估溝通" },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>category: "唇",<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>items: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "透亮霧唇", price: "$ 9,800", note: "包含 6 個月內調整唇色" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "光感淡色", price: "$ 6,800", note: "調整暗沈/卡色\n(非上色，含3個月內服務)" },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>category: "眼",<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>items: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "美瞳眼線", price: "$ 5,800", note: "自然深邃感更有神" },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>category: "睫毛",<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>items: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "睫毛管理", price: "$ 1,200", note: "原生睫毛捲翹塑形、無異物感、可刷睫毛膏" },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">];</p>
+<p class="p2"><br></p>
+<p class="p1">// 舊客補色資料 (分為眉、唇、眼)</p>
+<p class="p1">const TOUCH_UP_BROWS = {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>category: "眉",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>items: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "半年內", price: "$ 2,000", note: "" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "一年內", price: "$ 2,800", note: "" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "一年以上", price: "$ 3,800", note: "" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "超過兩年以上\n中途他店操作", price: "享原價65折優惠", note: "視為重新操作" },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>]</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">const TOUCH_UP_LIPS = {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>category: "唇",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>items: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "霧唇補色", price: "$ 3,800", note: "" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "光感淡色", price: "$ 2,500", note: "調整暗沈/卡色" },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>]</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">const TOUCH_UP_EYES = {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>category: "眼",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>items: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "美瞳眼線", price: "$ 2,800", note: "" },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>]</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">// 輔助函式：將 Google Drive View 連結轉換為更穩定的 Thumbnail 直接連結</p>
+<p class="p1">const getDriveDirectLink = (id) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return `https://drive.google.com/thumbnail?id=${id}&amp;sz=w1920`;</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">// 輔助函式：從 Google Drive 網址中提取檔案 ID</p>
+<p class="p1">const extractDriveId = (url) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return match ? match[1] : url;<span class="Apple-converted-space"> </span></p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">// 更新後的作品集資料結構</p>
+<p class="p1">const GALLERY_ALBUMS = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>id: 1,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: '半永久精緻霧眉',</p>
+<p class="p1"><span class="Apple-converted-space">    </span>category: 'Eyebrows',</p>
+<p class="p1"><span class="Apple-converted-space">    </span>cover: getDriveDirectLink('1bfZJNDb93A38NAWmJtGvEElqzfnvWrQD'),</p>
+<p class="p1"><span class="Apple-converted-space">    </span>type: 'album',</p>
+<p class="p1"><span class="Apple-converted-space">    </span>media: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ type: 'image', url: getDriveDirectLink('1bfZJNDb93A38NAWmJtGvEElqzfnvWrQD') },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ type: 'image', url: getDriveDirectLink('19lI68ZqzRettgVT4euBnU7CLSjZuC-zj') },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ type: 'image', url: getDriveDirectLink('1Dd0Ow_KVWH1JtVxrA50UKqrSHJIo2_zE') },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ type: 'image', url: getDriveDirectLink('1ZBDi3kb6oRS2L1pkjBhRT5cZ0zJiHBiM') },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ type: 'image', url: getDriveDirectLink('1MNXrsn5M83WWPsnfQjbLuXPh8uDCZ8Uq') },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ type: 'video', url: 'https://drive.google.com/file/d/1nWQsoVFnT09UHkiZ8eXVP_2eSVc3SArb/preview' },<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ type: 'image', url: getDriveDirectLink('1nAS_7KK-0FacF4enirEKpGXfqMBaMDb7') },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ type: 'image', url: getDriveDirectLink('15Rb-71X5cbx3j9zRmJb76-f_k5lFrXRi') },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>id: 2,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: '睫毛捲翹管理',</p>
+<p class="p1"><span class="Apple-converted-space">    </span>category: 'Lashes',</p>
+<p class="p1"><span class="Apple-converted-space">    </span>cover: getDriveDirectLink('11iAdaxsCIs4iPIX1OrkIFu6hiJts_OHz'),</p>
+<p class="p1"><span class="Apple-converted-space">    </span>type: 'album',</p>
+<p class="p1"><span class="Apple-converted-space">    </span>media: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ type: 'image', url: getDriveDirectLink('11iAdaxsCIs4iPIX1OrkIFu6hiJts_OHz') },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ type: 'image', url: getDriveDirectLink('1SgpC2Ni2AAUbxwi-D36zJMpWOpe30d0M') },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ type: 'image', url: getDriveDirectLink('1B9MjXYLlGFDImM8YfWKEQExbv2HVHgJ0') },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ type: 'image', url: getDriveDirectLink('1oUbPr_zXKEO_bnaiGi8Eu6vBBzMZEEGO') }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>id: 3,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: '霧唇定妝作品',</p>
+<p class="p1"><span class="Apple-converted-space">    </span>category: 'Lips',</p>
+<p class="p1"><span class="Apple-converted-space">    </span>cover: getDriveDirectLink('1SWfLsXxHUnQEgdzZJ474jia4h8lSdsKN'),</p>
+<p class="p1"><span class="Apple-converted-space">    </span>type: 'album',</p>
+<p class="p1"><span class="Apple-converted-space">    </span>media: [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ type: 'image', url: getDriveDirectLink('1SWfLsXxHUnQEgdzZJ474jia4h8lSdsKN') },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ type: 'image', url: getDriveDirectLink('1NFfmViBdSQrVMScF7aud6VfT-jZjiGdB') },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ type: 'image', url: getDriveDirectLink('1ydiu6LOKxpkJsR8cPXNT0_CQHziKRHET') }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">];</p>
+<p class="p2"><br></p>
+<p class="p1">const GOOGLE_MAPS_LINK = "https://maps.app.goo.gl/KZgXKhMfGDZEBmzs9";</p>
+<p class="p2"><br></p>
+<p class="p1">const TESTIMONIALS = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>name: "Emily Chen",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>service: "自然霧眉",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>text: "老師非常細心，溝通眉型的時候很有耐心，成果超級自然，完全是我喜歡的樣子！",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>stars: 5,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>date: "2 週前"</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>name: "Sarah Lin",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>service: "霧唇",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>text: "本來很怕痛，結果過程幾乎沒感覺。現在早上起床氣色都很好，省了好多化妝時間。",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>stars: 5,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>date: "1 個月前"</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>name: "Jessica Wu",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>service: "角蛋白美睫",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>text: "環境很舒服，做完睫毛很翹很持久，推推！",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>stars: 5,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>date: "3 個月前"</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">];</p>
+<p class="p2"><br></p>
+<p class="p1">const LOCATION_INFO = {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>address: "桃園市領航南路三段 (詳細地址預約後告知)",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transport: "桃園高鐵站、機場捷運 A18 站，步行約 10 分鐘",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>landmarks: "華泰名品城 (GLORIA OUTLETS)、Xpark、IKEA、UNIQLO",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.6726269492483!2d121.21885167632888!3d25.01123767783124!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a7cb906d23d3%3A0x5cea9d9e5854ba3a!2z6Z2S5Z-U6Zyn55yJIOWvqee-juiXneihkyBZc2V1bHRvIC5hcnTvvZznsr7nt7vpnKfnnInvvZzpnKfllIfnn6_mraPvvZznhKHlibXmt6HoibIg6Zmk6Imy772c552r5q-b6KeS6JuL55m9772c5pWZ5a24772cIOS_ruecie-9nOmcp-eciSDoj6_ms7DlkI3lk4Hln44g5Lit5aOi6Zyn55yJIOahg-Wckumcp-eciSDlpKflnJLpnKfnnIk!5e0!3m2!1szh-TW!2stw!4v1766666455944!5m2!1szh-TW!2stw"</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">// ------------------- 組件設計 -------------------</p>
+<p class="p2"><br></p>
+<p class="p1">// 燈箱組件 (Lightbox)</p>
+<p class="p1">const Lightbox = ({ album, initialIndex = 0, onClose }) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [currentIndex, setCurrentIndex] = useState(initialIndex);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// 鍵盤導航支援</p>
+<p class="p1"><span class="Apple-converted-space">  </span>useEffect(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const handleKeyDown = (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (e.key === 'Escape') onClose();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (e.key === 'ArrowRight') nextImage();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (e.key === 'ArrowLeft') prevImage();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>window.addEventListener('keydown', handleKeyDown);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return () =&gt; window.removeEventListener('keydown', handleKeyDown);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}, [currentIndex, onClose]);<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const nextImage = (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(e) e.stopPropagation();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (album.media.length &gt; 1) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>setCurrentIndex((prev) =&gt; (prev + 1) % album.media.length);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const prevImage = (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(e) e.stopPropagation();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (album.media.length &gt; 1) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>setCurrentIndex((prev) =&gt; (prev - 1 + album.media.length) % album.media.length);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const currentItem = album.media[currentIndex];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">      </span>className="fixed inset-0 z-[100] bg-black/70 flex items-center justify-center p-4 backdrop-blur-sm"</p>
+<p class="p1"><span class="Apple-converted-space">      </span>onClick={onClose}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>onContextMenu={(e) =&gt; e.preventDefault()}<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>className="relative bg-transparent w-full md:w-1/3 max-h-[90vh] flex flex-col items-center justify-center select-none"</p>
+<p class="p1"><span class="Apple-converted-space">        </span>onClick={(e) =&gt; e.stopPropagation()}<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">          </span>onClick={onClose}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>className="absolute -top-12 right-0 text-white/80 hover:text-white transition-colors"</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;X className="w-8 h-8" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/button&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className={`relative w-full shadow-2xl rounded-sm overflow-hidden group flex items-center justify-center ${currentItem.type === 'video' ? 'aspect-[9/16] bg-black' : 'bg-transparent'}`}&gt;</p>
+<p class="p2"><span class="Apple-converted-space">          </span></p>
+<p class="p1"><span class="Apple-converted-space">          </span>{currentItem.type === 'video' ? (</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;iframe<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">              </span>src={`https://drive.google.com/file/d/${extractDriveId(currentItem.url)}/preview?autoplay=1&amp;mute=1`}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>className="w-full h-full border-0"</p>
+<p class="p1"><span class="Apple-converted-space">              </span>allow="autoplay; encrypted-media"</p>
+<p class="p1"><span class="Apple-converted-space">              </span>allowFullScreen</p>
+<p class="p1"><span class="Apple-converted-space">              </span>title="Video Player"</p>
+<p class="p1"><span class="Apple-converted-space">            </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>) : (</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;img<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">              </span>src={currentItem.url}<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">              </span>alt={`${album.title} - ${currentIndex + 1}`}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>className="w-full h-auto max-h-[80vh] object-contain mx-auto select-none"</p>
+<p class="p1"><span class="Apple-converted-space">              </span>referrerPolicy="no-referrer"</p>
+<p class="p1"><span class="Apple-converted-space">              </span>draggable="false"</p>
+<p class="p1"><span class="Apple-converted-space">              </span>onContextMenu={(e) =&gt; e.preventDefault()}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>)}</p>
+<p class="p2"><span class="Apple-converted-space">          </span></p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="absolute top-[66%] left-0 right-0 text-center pointer-events-none select-none z-10"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span className="text-white/60 text-xs md:text-sm font-serif tracking-[0.3em] drop-shadow-md uppercase bg-black/10 px-2 py-1 rounded-full backdrop-blur-[1px]"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>Yseulto.art 審美藝術</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>{album.media.length &gt; 1 &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;button<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>onClick={prevImage}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 text-white/70 hover:bg-black/40 hover:text-white transition-all opacity-0 group-hover:opacity-100 z-20"</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;ChevronLeft className="w-6 h-6" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;button<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>onClick={nextImage}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 text-white/70 hover:bg-black/40 hover:text-white transition-all opacity-0 group-hover:opacity-100 z-20"</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;ChevronRight className="w-6 h-6" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>)}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>{album.media.length &gt; 1 &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-20"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{album.media.map((_, idx) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                  </span>key={idx}</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>className={`h-1 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-4 bg-white' : 'w-1.5 bg-white/40'}`}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="mt-4 text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;h4 className="text-white font-serif tracking-widest text-lg"&gt;{album.title}&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;p className="text-white/60 text-xs mt-1 uppercase tracking-wide"&gt;{album.category}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>);</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">const SocialButton = ({ href, icon: Icon, label, colorClass, bgColorClass, borderColorClass }) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;a<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>href={href}<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>target="_blank"<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>rel="noopener noreferrer"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>className={`</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex items-center justify-center gap-2 px-5 py-2.5 rounded-full</p>
+<p class="p1"><span class="Apple-converted-space">      </span>transform transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl</p>
+<p class="p1"><span class="Apple-converted-space">      </span>${bgColorClass} ${colorClass} ${borderColorClass} border w-full sm:w-auto min-w-[130px]</p>
+<p class="p1"><span class="Apple-converted-space">      </span>group overflow-hidden relative</p>
+<p class="p1"><span class="Apple-converted-space">    </span>`}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;span className="relative z-10 flex items-center gap-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{Icon}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span className="font-medium tracking-wide text-xs"&gt;{label}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/a&gt;</p>
+<p class="p1">);</p>
+<p class="p2"><br></p>
+<p class="p1">const SectionTitle = ({ children }) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h3 className="text-xl font-bold text-[#b08d55] mb-5 flex items-center gap-3 mt-8 first:mt-0 relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;span className="w-8 h-[3px] bg-[#fed455]"&gt;&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;span className="tracking-widest"&gt;{children}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;span className="w-8 h-[3px] bg-[#fed455]"&gt;&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/h3&gt;</p>
+<p class="p1">);</p>
+<p class="p2"><br></p>
+<p class="p1">// 規則列表項目 (預約須知用 - 黑色文字)</p>
+<p class="p1">const RuleListItem = ({ children }) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;li className={`flex items-start gap-3 mb-3 leading-relaxed text-[#4b4b4b] text-sm md:text-base`}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;span className={`mt-2 min-w-[5px] h-[5px] rounded-full bg-[#fed455]`} /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;span&gt;{children}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/li&gt;</p>
+<p class="p1">);</p>
+<p class="p2"><br></p>
+<p class="p1">// 內文列表項目 (服務說明用)</p>
+<p class="p1">const InfoListItem = ({ children }) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;li className="flex items-start gap-3 mb-2 leading-relaxed text-[#594a42] text-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;span className="mt-2 min-w-[4px] h-[4px] rounded-full bg-[#fed455]" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;span&gt;{children}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/li&gt;</p>
+<p class="p1">);</p>
+<p class="p2"><br></p>
+<p class="p1">// Accordion 組件 (摺疊選單)</p>
+<p class="p1">const AccordionItem = ({ title, children, defaultOpen = false }) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [isOpen, setIsOpen] = useState(defaultOpen);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div className="border-b border-[#fee9a7] last:border-0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>onClick={() =&gt; setIsOpen(!isOpen)}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>className="w-full flex items-center justify-between py-5 px-2 text-left hover:bg-[#fffefb]/50 transition-colors group"</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h4 className="font-medium text-[#433422] tracking-wider text-base group-hover:text-[#b08d55] transition-colors flex items-center gap-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">           </span>{title.includes("Q：") &amp;&amp; &lt;HelpCircle className="w-4 h-4 text-[#fed455]" /&gt;}</p>
+<p class="p1"><span class="Apple-converted-space">           </span>{title}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className={`</p>
+<p class="p1"><span class="Apple-converted-space">          </span>w-8 h-8 rounded-full border border-[#fed455] flex items-center justify-center</p>
+<p class="p1"><span class="Apple-converted-space">          </span>transition-all duration-300 ${isOpen ? 'bg-[#fed455] text-white rotate-180' : 'text-[#fed455]'}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;ChevronDown className="w-4 h-4" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div className={`</p>
+<p class="p1"><span class="Apple-converted-space">        </span>overflow-hidden transition-all duration-300 ease-in-out</p>
+<p class="p1"><span class="Apple-converted-space">        </span>${isOpen ? 'max-h-[800px] opacity-100 pb-6' : 'max-h-0 opacity-0'}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>`}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="px-4 text-[#594a42]"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{children}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>);</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">// 作品集卡片</p>
+<p class="p1">const GalleryCard = ({ item, onClick }) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>className="group relative bg-[#fffefb] overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 ease-out border border-[#f0eadd]"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>onClick={() =&gt; onClick(item)}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div className="aspect-[4/5] overflow-hidden relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;img<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>src={item.cover}<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>alt={item.title}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 select-none"</p>
+<p class="p1"><span class="Apple-converted-space">        </span>loading="lazy"</p>
+<p class="p1"><span class="Apple-converted-space">        </span>referrerPolicy="no-referrer"</p>
+<p class="p1"><span class="Apple-converted-space">        </span>draggable="false"</p>
+<p class="p1"><span class="Apple-converted-space">      </span>/&gt;</p>
+<p class="p2"><span class="Apple-converted-space">      </span></p>
+<p class="p1"><span class="Apple-converted-space">      </span>{item.type === 'video' &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/20 transition-colors"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;PlayCircle className="w-10 h-10 text-white/90 drop-shadow-md" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#433422]/80 to-transparent p-4 translate-y-2 group-hover:translate-y-0 transition-transform duration-300"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p className="text-[#fdf5d8] text-xs tracking-wider font-light mb-0.5 uppercase"&gt;{item.category}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p className="text-white text-sm font-medium tracking-wide"&gt;{item.title}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">);</p>
+<p class="p2"><br></p>
+<p class="p1">// 評價卡片</p>
+<p class="p1">const ReviewCard = ({ review }) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;a<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>href={GOOGLE_MAPS_LINK}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>target="_blank"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>rel="noopener noreferrer"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>className="bg-[#fffefb] p-6 border border-[#f0eadd] shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-full rounded-lg group cursor-pointer relative"</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div className="flex justify-between items-start mb-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div className="flex items-center gap-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="w-8 h-8 rounded-full bg-[#fbbc05] text-white flex items-center justify-center font-bold text-xs"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{review.name.charAt(0)}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span className="font-sans text-[#433422] font-bold text-sm block"&gt;{review.name}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span className="text-[#99815c] text-[10px] block"&gt;{review.date}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{/* 修改：改為讚的圖示 */}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;ThumbsUp className="w-5 h-5 text-[#b08d55] opacity-80" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div className="flex gap-0.5 mb-3 text-[#fbbc05]"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{[...Array(review.stars)].map((_, i) =&gt; &lt;Star key={i} className="w-4 h-4 fill-current stroke-none" /&gt;)}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p className="text-[#594a42] text-sm leading-relaxed mb-6 flex-grow line-clamp-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{review.text}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/p&gt;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div className="mt-auto pt-4 border-t border-[#f0eadd]/50 flex justify-between items-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">       </span>&lt;span className="text-[#99815c] text-xs bg-[#fff9e6] px-2 py-0.5 rounded-full border border-[#fee9a7]/50"&gt;{review.service}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">       </span>&lt;span className="text-xs text-[#4285F4] font-medium opacity-0 group-hover:opacity-100 transition-opacity"&gt;在 Google 上閱讀&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/a&gt;</p>
+<p class="p1">);</p>
+<p class="p2"><br></p>
+<p class="p1">export default function App() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [activeTab, setActiveTab] = useState('home');<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [mainNav, setMainNav] = useState('home');<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-converted-space">  </span></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [lightboxOpen, setLightboxOpen] = useState(false);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [selectedAlbum, setSelectedAlbum] = useState(null);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>useEffect(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const handleContextMenu = (e) =&gt; e.preventDefault();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const handleDragStart = (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (e.target.tagName === 'IMG') e.preventDefault();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const handleKeyDown = (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if ((e.ctrlKey || e.metaKey) &amp;&amp; (e.key === 'c' || e.key === 'C')) e.preventDefault();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if ((e.ctrlKey || e.metaKey) &amp;&amp; (e.key === 'a' || e.key === 'A')) e.preventDefault();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.addEventListener('contextmenu', handleContextMenu);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.addEventListener('dragstart', handleDragStart);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.addEventListener('keydown', handleKeyDown);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>return () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.removeEventListener('contextmenu', handleContextMenu);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.removeEventListener('dragstart', handleDragStart);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.removeEventListener('keydown', handleKeyDown);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}, []);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const openLightbox = (album) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setSelectedAlbum(album);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setLightboxOpen(true);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const closeLightbox = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setLightboxOpen(false);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setSelectedAlbum(null);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const serviceSubTabs = [</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ id: 'rules', label: '預約須知', icon: ClipboardList },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ id: 'eyebrows', label: '精緻霧眉', icon: EyebrowIcon },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ id: 'lips', label: '唇色校正', icon: LipsIcon },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ id: 'eyeliner', label: '美瞳眼線', icon: Eye },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ id: 'lashes', label: '睫毛管理', icon: Clock },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const mainTabs = [</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ id: 'services', label: '服務項目', icon: Sparkles, hasSubmenu: true },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ id: 'pricelist', label: '價目表', icon: DollarSign },<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ id: 'gallery', label: '作品集', icon: ImageIcon },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ id: 'reviews', label: '好評反饋', icon: MessageSquare },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ id: 'location', label: '位置資訊', icon: MapPinIcon },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ id: 'courses', label: '教學課程', icon: GraduationCap },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const handleMainTabClick = (tabId) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setMainNav(tabId);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (tabId === 'services') {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>setActiveTab('rules');<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>setActiveTab(tabId);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>window.scrollTo({ top: 0, behavior: 'smooth' });</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const renderContent = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>switch(activeTab) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>case 'home':</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="space-y-8 animate-fadeIn"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="bg-[#fffefb] p-8 md:p-12 shadow-sm border border-[#fee9a7]/50 text-center rounded-lg relative overflow-hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#fed455] via-[#fee9a7] to-[#fed455]"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;div className="absolute -left-10 -bottom-10 opacity-5 pointer-events-none"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;Sparkles className="w-40 h-40 text-[#b08d55]" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;div className="flex justify-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;SectionTitle&gt;審美藝術&lt;/SectionTitle&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;div className="max-w-lg mx-auto space-y-6 text-[#594a42] leading-loose text-sm md:text-base tracking-wide"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>美麗來自內心的映照，&lt;br/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>不追逐絢麗的光。</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>透過細膩的技法，&lt;br/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>還原您與生俱來的從容與優雅。</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;p className="font-serif text-[#b08d55] pt-4 tracking-wider leading-relaxed"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>在 Yseulto.art&lt;br/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>遇見安靜而有力量的自己</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;div className="flex justify-center gap-6 mt-10"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;button<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                   </span>onClick={() =&gt; handleMainTabClick('services')}</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>className="px-8 py-2.5 border border-[#b08d55] text-[#b08d55] rounded-full text-sm tracking-widest hover:bg-[#b08d55] hover:text-white transition-all duration-300"</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>瀏覽服務</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;a<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                   </span>href="https://lin.ee/ywqbFuu"<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                   </span>target="_blank"<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                   </span>rel="noopener noreferrer"</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>className="px-8 py-2.5 bg-[#433422] text-[#fff9e6] rounded-full text-sm tracking-widest hover:bg-[#5e4b35] transition-all duration-300 shadow-md"</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>立即預約</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>case 'rules':</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="space-y-6 animate-fadeIn"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="bg-[#fffefb] p-8 shadow-sm border border-[#fee9a7]/50 relative overflow-hidden rounded-lg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;div className="absolute -right-8 -top-8 text-[8rem] font-serif text-[#fed455]/10 opacity-80 select-none pointer-events-none rotate-12"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>Rules</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="flex justify-center mb-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;SectionTitle&gt;預約與店內守則&lt;/SectionTitle&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;ul className="space-y-3 relative z-10 pl-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{SHOP_RULES[0].content.map((rule, idx) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;RuleListItem key={idx}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{rule.text}</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/RuleListItem&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="bg-[#fffefb] p-8 shadow-sm border border-[#fee9a7]/50 relative overflow-hidden rounded-lg mt-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="flex justify-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;SectionTitle&gt;如何預約/諮詢&lt;/SectionTitle&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">              </span></p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="flex flex-col items-center gap-6 mt-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="bg-[#fff9e6] p-6 rounded-lg border border-[#fee9a7] w-full max-w-md relative group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;p className="text-[#594a42] text-sm mb-4 font-medium text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>請複製以下格式，傳送至官方 LINE：</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="text-[#594a42] text-sm leading-loose space-y-1 select-text cursor-text" onContextMenu={(e) =&gt; e.stopPropagation()}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p&gt;您的姓名：&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p&gt;電話：&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p&gt;預約項目：&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p&gt;理想的時間與日期：（可填寫2-3個時段）&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;a<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                  </span>href="https://lin.ee/ywqbFuu"<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                  </span>target="_blank"<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                  </span>rel="noopener noreferrer"</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>className="flex items-center gap-3 px-8 py-3 bg-[#06C755] text-white rounded-full hover:bg-[#05b64d] transition-all duration-300 shadow-md group"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;LineIcon className="w-6 h-6" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;span className="tracking-widest font-medium"&gt;立即預約&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/a&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p className="text-[#99815c] text-xs text-center leading-relaxed"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>我們會有專人為您服務，&lt;br/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>完成預約後會給您詳細地址資訊</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>case 'pricelist':</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="space-y-8 animate-fadeIn"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="text-center mb-10"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="flex justify-center"&gt;&lt;SectionTitle&gt;價目表&lt;/SectionTitle&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;p className="text-[#b08d55] text-xs uppercase tracking-[0.3em] mt-3"&gt;服務項目&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="grid grid-cols-1 md:grid-cols-2 gap-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{PRICE_LIST.map((category, idx) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div key={idx} className="bg-[#fffefb] p-8 shadow-sm border border-[#fee9a7]/50 rounded-lg relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;SectionTitle&gt;{category.category}&lt;/SectionTitle&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;ul className="space-y-2 mt-4"&gt;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{category.items.map((item, i) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;li key={i} className="flex justify-between items-baseline group border-b border-[#fee9a7]/30 pb-1.5 last:border-0 last:pb-0"&gt;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="flex-1 pr-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;span className="text-[#4b4b4b] font-medium text-lg block group-hover:text-[#b08d55] transition-colors whitespace-pre-line"&gt;{item.name}&lt;/span&gt;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;span className="text-[#594a42] text-xs whitespace-pre-line leading-relaxed"&gt;{item.note}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span className="text-[#b08d55] font-serif font-medium text-base tracking-widest shrink-0"&gt;{item.price}&lt;/span&gt;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="mt-16 text-center mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="flex justify-center"&gt;&lt;SectionTitle&gt;舊客單次補色&lt;/SectionTitle&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p className="text-[#8a6d3b] text-sm tracking-widest mt-4 bg-[#fff9e6] inline-block px-4 py-1.5 rounded-full border border-[#fee9a7] font-medium shadow-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>僅限本店操作過之顧客</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p className="text-[#8a6d3b] text-xs tracking-widest mt-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>依最後一次操作日期計算</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="space-y-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="grid grid-cols-1 md:grid-cols-2 gap-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="bg-[#fffefb] p-8 shadow-sm border border-[#fee9a7]/50 rounded-lg relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;SectionTitle&gt;{TOUCH_UP_BROWS.category}&lt;/SectionTitle&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;ul className="space-y-2 mt-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{TOUCH_UP_BROWS.items.map((item, i) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;li key={i} className="flex justify-between items-baseline group border-b border-[#fee9a7]/30 pb-1.5 last:border-0 last:pb-0"&gt;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="flex-1 pr-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;span className="text-[#4b4b4b] font-medium text-lg block group-hover:text-[#b08d55] transition-colors whitespace-pre-line"&gt;{item.name}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>{item.note &amp;&amp; &lt;span className="text-[#594a42] text-xs"&gt;{item.note}&lt;/span&gt;}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span className="text-[#b08d55] font-serif font-medium text-base tracking-widest shrink-0"&gt;{item.price}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="bg-[#fffefb] p-8 shadow-sm border border-[#fee9a7]/50 rounded-lg relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;SectionTitle&gt;{TOUCH_UP_LIPS.category}&lt;/SectionTitle&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;ul className="space-y-2 mt-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{TOUCH_UP_LIPS.items.map((item, i) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;li key={i} className="flex justify-between items-baseline group border-b border-[#fee9a7]/30 pb-1.5 last:border-0 last:pb-0"&gt;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="flex-1 pr-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;span className="text-[#4b4b4b] font-medium text-lg block group-hover:text-[#b08d55] transition-colors"&gt;{item.name}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>{item.note &amp;&amp; &lt;span className="text-[#594a42] text-xs"&gt;{item.note}&lt;/span&gt;}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span className="text-[#b08d55] font-serif font-medium text-base tracking-widest shrink-0"&gt;{item.price}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="grid grid-cols-1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;div className="bg-[#fffefb] p-8 shadow-sm border border-[#fee9a7]/50 rounded-lg relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;SectionTitle&gt;{TOUCH_UP_EYES.category}&lt;/SectionTitle&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;ul className="space-y-2 mt-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{TOUCH_UP_EYES.items.map((item, i) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;li key={i} className="flex justify-between items-baseline group border-b border-[#fee9a7]/30 pb-1.5 last:border-0 last:pb-0"&gt;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="flex-1 pr-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;span className="text-[#4b4b4b] font-medium text-lg block group-hover:text-[#b08d55] transition-colors"&gt;{item.name}&lt;/span&gt;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                          </span>{item.note &amp;&amp; &lt;span className="text-[#594a42] text-xs"&gt;{item.note}&lt;/span&gt;}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span className="text-[#b08d55] font-serif font-medium text-base tracking-widest shrink-0"&gt;{item.price}&lt;/span&gt;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>case 'gallery':</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="space-y-8 animate-fadeIn"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">             </span>&lt;div className="text-center mb-10"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;div className="flex justify-center"&gt;&lt;SectionTitle&gt;作品集&lt;/SectionTitle&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;p className="text-[#b08d55] text-xs uppercase tracking-[0.3em] mt-3"&gt;精選案例&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{GALLERY_ALBUMS.map((item) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;GalleryCard key={item.id} item={item} onClick={openLightbox} /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="text-center mt-10"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;a<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                 </span>href="https://www.instagram.com/yseulto.art/"<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                 </span>target="_blank"<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                 </span>rel="noopener noreferrer"</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>className="inline-flex items-center gap-3 px-6 py-2 border border-[#fed455] text-[#b08d55] hover:bg-[#fed455] hover:text-white transition-all duration-300 text-sm tracking-widest uppercase rounded-full"</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>查看更多作品 &lt;ChevronRight className="w-3 h-3" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>case 'reviews':</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="space-y-8 animate-fadeIn"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="text-center mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="flex justify-center"&gt;&lt;SectionTitle&gt;好評反饋&lt;/SectionTitle&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;p className="text-[#b08d55] text-xs uppercase tracking-[0.3em] mt-3"&gt;真實客戶心聲&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{TESTIMONIALS.map((review, idx) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;ReviewCard key={idx} review={review} /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="text-center mt-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;a<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                 </span>href={GOOGLE_MAPS_LINK}</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>target="_blank"<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                 </span>rel="noopener noreferrer"</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>className="inline-flex items-center gap-3 px-6 py-2.5 bg-white border border-[#e0e0e0] text-[#5f6368] hover:bg-[#f8f9fa] hover:border-[#dadce0] hover:text-[#202124] transition-all duration-300 text-sm font-medium rounded-full shadow-sm"</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>查看更多評論</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>case 'location':</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="space-y-6 animate-fadeIn"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">             </span>&lt;div className="bg-[#fffefb] p-0 shadow-sm border border-[#fee9a7]/50 overflow-hidden rounded-lg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="w-full h-64 md:h-80 bg-[#fff9e6]"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;iframe<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>src={LOCATION_INFO.mapUrl}<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>width="100%"<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>height="100%"<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>style={{border:0}}<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>allowFullScreen=""<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>loading="lazy"<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>title="Google Map"</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>className="grayscale hover:grayscale-0 transition-all duration-500 opacity-90 hover:opacity-100"</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&gt;&lt;/iframe&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="p-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="flex justify-center mb-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;SectionTitle&gt;位置資訊&lt;/SectionTitle&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="space-y-6 mt-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="flex gap-4 items-start"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;div className="w-10 h-10 rounded-full bg-[#fff9e6] flex items-center justify-center flex-shrink-0 text-[#b08d55]"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;MapPinIcon className="w-5 h-5" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h4 className="font-serif text-[#433422] font-medium mb-1"&gt;工作室地址&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p className="text-[#594a42] text-sm"&gt;{LOCATION_INFO.address}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="flex gap-4 items-start"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;div className="w-10 h-10 rounded-full bg-[#fff9e6] flex items-center justify-center flex-shrink-0 text-[#b08d55]"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>&lt;div className="font-bold text-xs"&gt;MRT&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h4 className="font-serif text-[#433422] font-medium mb-1"&gt;大眾運輸&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p className="text-[#594a42] text-sm whitespace-pre-line"&gt;{LOCATION_INFO.transport}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="flex gap-4 items-start border-t border-[#fee9a7] pt-6 mt-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                       </span>&lt;div className="w-10 h-10 rounded-full bg-[#fff9e6] flex items-center justify-center flex-shrink-0 text-[#b08d55]"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>&lt;ShoppingBag className="w-4 h-4" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                       </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h4 className="font-serif text-[#433422] font-medium mb-1"&gt;周邊地標&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p className="text-[#594a42] text-sm leading-relaxed"&gt;{LOCATION_INFO.landmarks}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">             </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>case 'courses':</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="space-y-8 animate-fadeIn"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="bg-[#fffefb] p-10 shadow-sm border border-[#fee9a7]/50 text-center rounded-lg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;div className="w-20 h-20 bg-[#fff9e6] rounded-full flex items-center justify-center mx-auto mb-6 text-[#b08d55]"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;GraduationCap className="w-10 h-10" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;div className="flex justify-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;SectionTitle&gt;教學課程&lt;/SectionTitle&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">               </span></p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;div className="space-y-8 mt-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;div className="border-b border-[#fee9a7]/50 pb-8 last:border-0 last:pb-0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>&lt;div className="flex justify-center mb-2"&gt;&lt;SectionTitle&gt;新手零基礎霧眉課程&lt;/SectionTitle&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>&lt;p className="text-[#594a42] text-sm leading-loose max-w-lg mx-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>很多想踏入美業的人，最擔心的就是『學了不會做』或『做了沒客人』。&lt;br/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>這堂課不只是教妳把眉毛做完，而是教妳如何觀察每張臉的骨骼與氣韻。&lt;br/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>擁有一技之長，意味著妳擁有了選擇生活的權利。&lt;br/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>我們將毫無保留地分享實戰經驗，省去妳自我摸索的撞牆期，讓這份技術成為妳自信與收入的堅實後盾。</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>&lt;div className="flex justify-center mb-2"&gt;&lt;SectionTitle&gt;睫毛捲翹管理課程&lt;/SectionTitle&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>&lt;p className="text-[#594a42] text-sm leading-loose max-w-lg mx-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>這是一堂將變現能力最大化的『一日專修』課程。&lt;br/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>我們將獨家技法系統化拆解，您無需自行摸索，&lt;br/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>只需『完全複製』老師的手法，便能做出一模一樣的漂亮作品。&lt;br/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>以最短的時間成本，掌握這項高回客率的技術，&lt;br/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>為您的美業之路，開啟穩健的營收起點。</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;div className="mt-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;a<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                   </span>href="https://lin.ee/ywqbFuu"<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                   </span>target="_blank"<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                   </span>rel="noopener noreferrer"</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>className="inline-block bg-[#433422] text-[#fff9e6] px-8 py-3 rounded-full text-sm tracking-widest hover:bg-[#b08d55] transition-colors duration-300 shadow-md"</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>諮詢課程細節</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>);</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">      </span>case 'eyebrows':</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="space-y-6 animate-fadeIn"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="bg-[#fffefb] p-8 shadow-sm border border-[#fee9a7]/50 rounded-lg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;div className="flex justify-center mb-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;SectionTitle&gt;精緻霧眉&lt;/SectionTitle&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;AccordionItem title="常見問答 Q&amp;A" defaultOpen={false}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="space-y-2 mt-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{EYEBROW_QA_LIST.map((item, idx) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;AccordionItem key={`qa-${idx}`} title={item.question}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>{item.answer.map((ans, i) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;p key={i} className="mb-2 text-[#594a42] text-sm leading-relaxed"&gt;{ans}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/AccordionItem&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/AccordionItem&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">              </span>{EYEBROW_INFO.map((section, idx) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;AccordionItem key={idx} title={section.title} defaultOpen={false}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>{section.content &amp;&amp; section.content.map((text, i) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p key={i} className="mb-3 text-[#594a42] text-sm leading-relaxed"&gt;{text}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>))}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                  </span>{section.sections &amp;&amp; section.sections.map((sub, i) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div key={i} className="mb-6 last:mb-0 mt-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>{section.title.includes("Q：") ? (</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h4 className="font-bold text-[#b08d55] mb-2 text-sm flex items-start gap-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                           </span>&lt;span className="bg-[#fff9e6] px-2 py-0.5 rounded text-xs border border-[#fee9a7]"&gt;Q&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                           </span>{sub.subtitle.replace("Q：", "")}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>) : (</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h4 className="font-bold text-[#b08d55] mb-2 text-sm bg-[#fff9e6] inline-block px-3 py-1 rounded-full"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>{sub.subtitle}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>)}</p>
+<p class="p2"><span class="Apple-converted-space">                       </span></p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;ul className="mt-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>{sub.items.map((item, j) =&gt; &lt;InfoListItem key={j}&gt;{item}&lt;/InfoListItem&gt;)}</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>))}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                  </span>{section.note &amp;&amp; &lt;p className="mb-4 text-[#594a42] font-medium text-sm border-l-4 border-[#b08d55] pl-3 py-1 bg-[#fff9e6]/50"&gt;{section.note}&lt;/p&gt;}</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                  </span>{section.items &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;ul className="mt-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>{section.items.map((item, i) =&gt; &lt;InfoListItem key={i}&gt;{item}&lt;/InfoListItem&gt;)}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>)}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                  </span>{section.warning &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="mt-6 p-4 bg-[#fffbf0] text-[#8a6d3b] text-sm border border-[#fee9a7] rounded flex gap-3 items-start"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;ShieldAlert className="w-5 h-5 flex-shrink-0 mt-0.5 text-[#fed455]" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;p className="leading-relaxed"&gt;{section.warning.replace('⚠️ ', '')}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/AccordionItem&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>case 'lips':</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="space-y-6 animate-fadeIn"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="bg-[#fffefb] p-8 shadow-sm border border-[#fee9a7]/50 rounded-lg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;div className="flex justify-center mb-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;SectionTitle&gt;唇色校正&lt;/SectionTitle&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;AccordionItem title="常見問答 Q&amp;A" defaultOpen={false}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="space-y-2 mt-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{LIPS_QA_LIST.map((item, idx) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;AccordionItem key={`qa-${idx}`} title={item.question}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>{item.answer.map((ans, i) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;p key={i} className="mb-2 text-[#594a42] text-sm leading-relaxed"&gt;{ans}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/AccordionItem&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/AccordionItem&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{LIPS_INFO.map((section, idx) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;AccordionItem key={idx} title={section.title} defaultOpen={false}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>{section.sections &amp;&amp; section.sections.map((sub, i) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div key={i} className="mb-6 last:mb-0 mt-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h4 className="font-bold text-[#b08d55] mb-2 text-sm bg-[#fff9e6] inline-block px-3 py-1 rounded-full"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>{sub.subtitle}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;ul className="mt-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>{sub.items.map((item, j) =&gt; &lt;InfoListItem key={j}&gt;{item}&lt;/InfoListItem&gt;)}</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>{section.note &amp;&amp; &lt;p className="mb-4 text-[#594a42] font-medium text-sm border-l-4 border-[#b08d55] pl-3 py-1 bg-[#fff9e6]/50"&gt;{section.note}&lt;/p&gt;}</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>{section.items &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;ul className="mt-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>{section.items.map((item, i) =&gt; &lt;InfoListItem key={i}&gt;{item}&lt;/InfoListItem&gt;)}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>{section.warning &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="mt-6 p-4 bg-[#fffbf0] text-[#8a6d3b] text-sm border border-[#fee9a7] rounded flex gap-3 items-start"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;ShieldAlert className="w-5 h-5 flex-shrink-0 mt-0.5 text-[#fed455]" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;p className="leading-relaxed"&gt;{section.warning.replace('⚠️ ', '')}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/AccordionItem&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>case 'eyeliner':</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="space-y-6 animate-fadeIn"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="bg-[#fffefb] p-8 shadow-sm border border-[#fee9a7]/50 rounded-lg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;div className="flex justify-center mb-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;SectionTitle&gt;美瞳眼線&lt;/SectionTitle&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;AccordionItem title="常見問答 Q&amp;A" defaultOpen={false}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="space-y-2 mt-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{EYELINER_QA_LIST.map((item, idx) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;AccordionItem key={`qa-${idx}`} title={item.question}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>{item.answer.map((ans, i) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;p key={i} className="mb-2 text-[#594a42] text-sm leading-relaxed"&gt;{ans}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/AccordionItem&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/AccordionItem&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{EYELINER_INFO.map((section, idx) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;AccordionItem key={idx} title={section.title} defaultOpen={false}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>{section.sections &amp;&amp; section.sections.map((sub, i) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div key={i} className="mb-6 last:mb-0 mt-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h4 className="font-bold text-[#b08d55] mb-2 text-sm bg-[#fff9e6] inline-block px-3 py-1 rounded-full"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>{sub.subtitle}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;ul className="mt-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>{sub.items.map((item, j) =&gt; &lt;InfoListItem key={j}&gt;{item}&lt;/InfoListItem&gt;)}</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>{section.items &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;ul className="mt-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>{section.items.map((item, i) =&gt; &lt;InfoListItem key={i}&gt;{item}&lt;/InfoListItem&gt;)}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>{section.note &amp;&amp; &lt;p className="mb-4 text-[#594a42] font-medium text-sm border-l-4 border-[#b08d55] pl-3 py-1 bg-[#fff9e6]/50"&gt;{section.note}&lt;/p&gt;}</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>{section.warning &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="mt-6 p-4 bg-[#fffbf0] text-[#8a6d3b] text-sm border border-[#fee9a7] rounded flex gap-3 items-start"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;ShieldAlert className="w-5 h-5 flex-shrink-0 mt-0.5 text-[#fed455]" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;p className="leading-relaxed"&gt;{section.warning.replace('⚠️ ', '')}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/AccordionItem&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>case 'lashes':</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="space-y-6 animate-fadeIn"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="bg-[#fffefb] p-8 shadow-sm border border-[#fee9a7]/50 rounded-lg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;div className="flex justify-center mb-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;SectionTitle&gt;睫毛管理&lt;/SectionTitle&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;AccordionItem title="常見問答 Q&amp;A" defaultOpen={false}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="space-y-2 mt-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{LASHES_QA_LIST.map((item, idx) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;AccordionItem key={`qa-${idx}`} title={item.question}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>{item.answer.map((ans, i) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;p key={i} className="mb-2 text-[#594a42] text-sm leading-relaxed"&gt;{ans}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/AccordionItem&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/AccordionItem&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{LASHES_INFO.map((section, idx) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;AccordionItem key={idx} title={section.title} defaultOpen={false}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;ul className="mt-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{section.items.map((item, i) =&gt; &lt;InfoListItem key={i}&gt;{item}&lt;/InfoListItem&gt;)}</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/AccordionItem&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>);</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">      </span>default:</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return null;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div className="min-h-screen bg-[#fffefc] font-sans selection:bg-[#fed455] selection:text-white select-none"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{/* 頂部裝飾條 */}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div className="h-1.5 bg-gradient-to-r from-[#fed455] via-[#fee9a7] to-[#fed455]" /&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;main className="max-w-3xl mx-auto min-h-screen bg-[#ffffff] shadow-[0_0_50px_-15px_rgba(254,212,85,0.15)] overflow-hidden flex flex-col relative border-x border-[#fbf7e8]"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>{/* Header 區域 - 明亮黃色漸層背景 */}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;header className="relative pt-20 pb-12 px-6 text-center overflow-hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{/* 背景層：使用指定的黃色漸層 */}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="absolute inset-0 bg-gradient-to-b from-[#fed455] to-[#fee9a7] z-0" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 z-0 mix-blend-overlay" /&gt;</p>
+<p class="p2"><span class="Apple-converted-space">           </span></p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="relative z-10"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{/* 調整：增加 onClick，讓點擊標題也能回到首頁 */}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">              </span>onClick={() =&gt; handleMainTabClick('home')}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>className="text-4xl md:text-5xl font-serif font-medium text-white tracking-[0.2em] mb-3 drop-shadow-md cursor-pointer hover:opacity-90 transition-opacity"</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>Yseulto.art</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="flex items-center justify-center gap-4 mb-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;span className="h-[1px] w-8 bg-white/70"&gt;&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>{/* 調整：增加 drop-shadow-md 與 font-medium，讓陰影立體效果更接近大標題 */}</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;p className="text-white text-lg tracking-[0.4em] uppercase font-medium drop-shadow-md"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>審美藝術</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;span className="h-[1px] w-8 bg-white/70"&gt;&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>{/* 新增：將首頁按鈕移至此處 */}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="mb-8 animate-fadeIn"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;button<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                 </span>onClick={() =&gt; handleMainTabClick('home')}</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>className={`</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>inline-flex items-center gap-2 px-6 py-2 rounded-full<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                   </span>border border-white/50 text-white<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                   </span>bg-white/10 backdrop-blur-[2px]</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>hover:bg-white hover:text-[#b08d55] hover:border-white</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>transition-all duration-300 text-sm tracking-widest shadow-sm</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>${mainNav === 'home' ? 'bg-white text-[#b08d55] font-medium' : ''}</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>`}</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;Home className="w-4 h-4" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;span&gt;進入首頁&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">               </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>{/* 社交按鈕群組 - 圓邊設計 + 漸層Hover */}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="flex flex-col sm:flex-row items-center justify-center gap-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;SocialButton<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>href="https://www.instagram.com/yseulto.art/"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>icon={&lt;Instagram className="w-5 h-5" /&gt;}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>label="INSTAGRAM"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>colorClass="text-white"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>borderColorClass="border-transparent"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>bgColorClass="bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] hover:opacity-90 shadow-lg"</p>
+<p class="p1"><span class="Apple-converted-space">              </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;SocialButton<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>href="https://www.facebook.com/profile.php?id=100090024147720"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>icon={&lt;Facebook className="w-5 h-5" /&gt;}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>label="FACEBOOK"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>colorClass="text-white"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>borderColorClass="border-transparent"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>bgColorClass="bg-[#1877F2] hover:bg-[#166fe5] shadow-lg"</p>
+<p class="p1"><span class="Apple-converted-space">              </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;SocialButton<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>href="https://lin.ee/ywqbFuu"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>icon={&lt;LineIcon className="w-5 h-5" /&gt;}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>label="預約/諮詢"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>colorClass="text-white"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>borderColorClass="border-transparent"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>bgColorClass="bg-[#06C755] hover:bg-[#05b64d] shadow-lg"</p>
+<p class="p1"><span class="Apple-converted-space">              </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>{/* 主導覽列 (Sticky Tabs) */}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;nav className="sticky top-0 z-50 bg-[#ffffff]/95 backdrop-blur-md border-y border-[#fee9a7] shadow-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="flex overflow-x-auto no-scrollbar py-3 px-4 md:justify-center gap-2 md:gap-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{mainTabs.map((tab) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">              </span>const Icon = tab.icon;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>const isActive = mainNav === tab.id;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>key={tab.id}</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>onClick={() =&gt; handleMainTabClick(tab.id)}</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>className={`</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>group flex items-center gap-2 px-4 py-2.5 rounded-full text-xs md:text-sm whitespace-nowrap transition-all duration-300 border</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>${isActive<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                      </span>? 'bg-[#fed455] text-white border-[#fed455] shadow-md'<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                      </span>: 'bg-transparent text-[#99815c] border-transparent hover:bg-[#fff9e6] hover:text-[#b08d55]'</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>`}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;Icon className={`w-3.5 h-3.5 transition-colors ${isActive ? 'text-white' : 'text-[#dcb96a] group-hover:text-[#b08d55]'}`} /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;span className="tracking-wide"&gt;{tab.label}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>{tab.hasSubmenu &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;ChevronDown className={`w-3 h-3 ml-1 transition-transform duration-300 ${isActive ? 'rotate-180 text-white' : 'text-[#dcb96a]'}`} /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>})}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>{/* 服務項目子選單 */}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{mainNav === 'services' &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="bg-[#fff9e6] border-b border-[#fee9a7] animate-fadeIn origin-top"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="flex overflow-x-auto no-scrollbar py-2.5 px-4 md:justify-center gap-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{serviceSubTabs.map((subTab) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>const SubIcon = subTab.icon;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>const isSubActive = activeTab === subTab.id;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>&lt;button</p>
+<p class="p1"><span class="Apple-converted-space">                       </span>key={subTab.id}</p>
+<p class="p1"><span class="Apple-converted-space">                       </span>onClick={() =&gt; setActiveTab(subTab.id)}</p>
+<p class="p1"><span class="Apple-converted-space">                       </span>className={`</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs whitespace-nowrap transition-all duration-200 border</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>${isSubActive<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                           </span>? 'bg-[#fed455] text-white border-[#fed455] shadow-sm font-medium'<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                           </span>: 'bg-white text-[#99815c] border-[#fee9a7] hover:border-[#fed455] hover:text-[#b08d55]'</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                       </span>`}</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                       </span>&lt;SubIcon className="w-3 h-3" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                       </span>{subTab.label}</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>})}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/nav&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>{/* 內容顯示區 */}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="flex-1 px-4 py-12 md:px-12 bg-[#ffffff]"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="max-w-3xl mx-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{renderContent()}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>{/* Footer */}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;footer className="bg-[#fff9e6] text-[#99815c] py-12 text-center border-t border-[#fee9a7]"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{/* 移除旋轉方塊，改為簡約的品牌展示 */}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="mb-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">             </span>&lt;p className="font-serif text-lg tracking-widest text-[#99815c]"&gt;Yseulto.art&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">             </span>&lt;p className="text-sm tracking-widest text-[#99815c] mt-1"&gt;審美藝術&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;p className="text-[10px] uppercase tracking-[0.2em] opacity-60 mt-6"&gt;© 2024 All Rights Reserved.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/footer&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>{/* 燈箱顯示 */}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{lightboxOpen &amp;&amp; selectedAlbum &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;Lightbox<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>album={selectedAlbum}<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>onClose={closeLightbox}<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">          </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>)}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/main&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;style dangerouslySetInnerHTML={{__html: `</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.no-scrollbar::-webkit-scrollbar {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>display: none;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.no-scrollbar {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>-ms-overflow-style: none;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>scrollbar-width: none;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes fadeIn {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>from { opacity: 0; transform: translateY(-5px); }</p>
+<p class="p1"><span class="Apple-converted-space">          </span>to { opacity: 1; transform: translateY(0); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.animate-fadeIn {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>animation: fadeIn 0.3s ease-out forwards;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>`}} /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>);</p>
+<p class="p1">}</p>
+</body>
+</html>
