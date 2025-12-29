@@ -1,0 +1,1570 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import { 
+  Instagram, Clock, ShieldAlert, ChevronRight, ChevronDown, ChevronUp, ChevronLeft,
+  Menu, X, Image as ImageIcon, PlayCircle, Facebook, MessageSquare, 
+  MapPin as MapPinIcon, ClipboardList, Eye, GraduationCap, ShoppingBag, 
+  Sparkles, DollarSign, FileText, Home, HelpCircle, Video, Star, Copy, ThumbsUp 
+} from 'lucide-react';
+
+// ------------------- 自定義 Icon 組件 -------------------
+
+const GoogleIcon = ({ className }) => (
+  <svg viewBox="0 0 24 24" className={className} xmlns="http://www.w3.org/2000/svg">
+    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+  </svg>
+);
+
+const LineIcon = ({ className = "w-6 h-6" }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className} xmlns="http://www.w3.org/2000/svg">
+    <path d="M21.6 10.7C21.6 5.9 17.3 2 12 2C6.7 2 2.4 5.9 2.4 10.7C2.4 14.9 6.1 18.5 11 19.2C11.3 19.3 11.5 19.4 11.6 19.8C11.7 20.2 11.6 20.8 11.5 21.3C11.5 21.3 11.4 22.3 11.3 22.5C11.2 22.9 11 23.6 11.7 23.5C12.3 23.4 15.6 21.4 17.7 19.9C17.7 19.9 17.7 19.9 17.8 19.9C20.1 18 21.6 14.6 21.6 10.7Z" />
+  </svg>
+);
+
+const EyebrowIcon = ({ className }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M7 14c2-4 5-6 10-4" />
+    <path d="M3 13c3-5 8-7 14-4" />
+    <path d="M11 10c1-1 3-2 5-1" />
+  </svg>
+);
+
+const LipsIcon = ({ className }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M12 16c-3 0-5-2-8-3 1-2 4-4 8-4s7 2 8 4c-3 1-5 3-8 3z" />
+    <path d="M12 9c-2 0-4 1-5.5 2C8 12.5 10 14 12 14s4-1.5 5.5-3C16 10 14 9 12 9z" />
+  </svg>
+);
+
+// ------------------- 資料內容設定 -------------------
+
+const SHOP_RULES = [
+  {
+    title: "店內規則",
+    content: [
+      { text: "採全預約制。建議提前一個月預約以保留理想時段，最晚請於前一日預約，當日可視情況詢問空檔。", highlight: false },
+      { text: "半永久定妝紋繡服務僅提供年滿 18 歲之顧客，未滿者恕無法受理。", highlight: false }, 
+      { text: "攜伴限一位，請提前告知。", highlight: false },
+      { text: "若攜伴，陪同者請於沙發區等待；請勿近距離觀看以免影響操作。", highlight: false },
+      { text: "若曾有臨時取消或未到紀錄，下次預約需預付 $500 定金。", highlight: false },
+      { text: "累計兩次臨時取消或無故未到，本店將不再受理預約，敬請見諒。", highlight: false },
+      { text: "預約保留 15 分鐘，遲到且未事先聯繫視同未到並取消預約。", highlight: false },
+      { text: "更改或取消預約請至少提前 3 天通知，定金可全額退還。", highlight: false },
+      { text: "美容空間禁止攜帶重口味食物及寵物。", highlight: false },
+    ]
+  }
+];
+
+// Q&A - 霧眉
+const EYEBROW_QA_LIST = [
+  {
+    question: "Q：什麼是「精緻半永久霧眉」？",
+    answer: [
+      "我們採用審美藝術獨家半永久定妝技術，使用檢驗合格的天然植物色乳，將色乳輕柔定色於皮膚合理皮層，打造出如同眉粉輕掃過的自然霧感。",
+      "區別於傳統紋眉，半永久霧眉後期保證「不變藍、不變橘紅、不卡色」。隨時間及皮膚自然代謝淡化，讓您能依據流行趨勢或風格變化靈活調整眉型。"
+    ]
+  },
+  {
+    question: "Q：霧眉會痛嗎？",
+    answer: [
+      "操作過程舒適溫和，痛感極低。我們注重客人的舒適度，大部分客人僅會感覺到皮膚被輕觸，許多客人在過程中甚至能舒服到睡著。"
+    ]
+  },
+  {
+    question: "Q：做完會有尷尬期（蠟筆小新）嗎？",
+    answer: [
+      "審美藝術採用最新的輕柔手法技術，施作當下即自然，告別傳統粗黑尷尬期與厚重結痂。",
+      "恢復期間（約 7 天）僅會有細微皮屑脫落，完全不影響日常生活與上班。"
+    ]
+  },
+  {
+    question: "Q：霧眉後可以碰水或化妝嗎？",
+    answer: [
+      "操作 2 小時後即可碰水（洗臉時請避開眉毛搓揉）。",
+      "眉毛以外的部位可以正常化妝，卸妝時請小心避開眉毛區域即可。",
+      "眉毛恢復期結束後，可自由使用眉粉或是眉筆。"
+    ]
+  },
+  {
+    question: "Q：半永久霧眉可以維持多久？",
+    answer: [
+      "一般約可維持 1～2 年。實際留色時間會依據「個人膚質」（油性肌膚代謝較快）、「新陳代謝速度」及「日常保養習慣」而有所不同。"
+    ]
+  },
+  {
+    question: "Q：多久需要回去補色呢？",
+    answer: [
+      "本店提供「首次操作後 3個月內免費補色一次」。建議於操作滿一個月後，觀察皮膚留色狀況並預約補色。",
+      "由於每個人皮膚吸收與代謝程度不同，第一次操作主要為測試皮膚留色度；第二次補色則能針對顏色與眉型細節進行微調。",
+      "完成補色後，才算是一次完整的霧眉定妝，能讓整體效果更完美、持久。"
+    ]
+  },
+  {
+    question: "Q：之前有在其他店做過霧眉，還可以操作嗎？",
+    answer: [
+      "若您有舊的眉底（底色），預約前請務必先傳送「原相機、無濾鏡」的清晰眉毛照片供我們評估。",
+      "若底色過深、變色（紅/藍眉）或形狀不對稱嚴重，可能需先進行轉色或除色處理，無法直接覆蓋。若評估後可直接操作，將依「改眉」項目計費。"
+    ]
+  },
+  {
+    question: "Q：霧眉顏色該如何挑選？",
+    answer: [
+      "我們會依據您的「原生眉毛顏色」、「瞳孔顏色」、「膚色」以及平日的「妝容習慣/髮色」進行綜合評估。",
+      "操作前會調配專屬色乳，並試色於皮膚上供您參考，溝通確認滿意後才會進行操作，打造最適合您的自然眉色。"
+    ]
+  },
+  {
+    question: "Q：在本店操作回去不滿意怎麼辦？",
+    answer: [
+      "美感是主觀的，因此我們極度重視「術前諮詢與設計」。操作前會花費充分時間溝通眉型與顏色，務必在您確認滿意後才會開始施作。",
+      "若回家後對眉型或顏色有微調需求，請放心，這些都可以與我們聯繫溝通協調，並在補色微調進行的調整，讓成果更貼近您的理想。"
+    ]
+  }
+];
+
+const EYEBROW_INFO = [
+  {
+    title: "施作前保養與準備",
+    sections: [
+      { subtitle: "施作前一週", items: ["請暫停使用酸類產品（果酸、A 酸、水楊酸等）及去角質，避免肌膚敏感或刺激。"] },
+      { subtitle: "施作前三天", items: ["多補充水分，加強保濕（可敷保濕面膜），避免眉毛乾裂影響上色。", "避免飲酒與熬夜，維持良好作息與身體狀態。"] },
+      { subtitle: "施作前一個月", items: ["請避開任何醫美療程，如雷射、額頭或眼周注射類項目。", "請暫勿修剪眉毛雜毛，以利依自然眉型進行整體設計。"] }
+    ]
+  },
+  {
+    title: "健康狀況與禁忌",
+    note: "如有以下情況，請務必於預約前主動告知，經評估後可能不建議或無法進行操作：",
+    items: [
+      "心臟疾病、糖尿病",
+      "懷孕期間",
+      "B 型肝炎、血液傳染性疾病",
+      "紅斑性狼瘡、憂鬱症、完美主義者",
+      "嚴重蟹足腫體質、疤痕肌",
+      "嚴重過敏性肌膚"
+    ],
+    warning: "⚠️ 若未事先告知相關健康狀況，導致術後狀況或效果不如預期，將以實際評估結果為準，恕無法作為後續爭議依據。"
+  },
+  {
+    title: "皮膚狀況與留色",
+    items: [
+      "眉毛部位若有傷口，或痘痘超過三顆，須待恢復完成後方可施作。",
+      "服用 A 酸期間會影響留色效果，建議暫停一個月後再進行操作。",
+      "痘痘肌、疤痕肌、過敏性肌膚、嚴重油性肌膚、酒糟肌脂漏性皮膚炎等，肌膚類型因皮脂分泌，修復能力或代謝速度不同，留色率與呈色效果有機會較弱。"
+    ]
+  },
+  {
+    title: "術後居家護理與注意事項", 
+    items: [
+      "詳細保養方式將於現場提供完整解說教學。",
+      "操作 2 小時後即可碰水清潔，洗臉時請避開眉毛部位搓揉。",
+      "日常保養品請避開眉毛區域；敷面膜時建議將眉毛部位剪開或避開。",
+      "修復期間（約一週）請暫停泡溫泉、游泳，並避免大量流汗或處於高溫環境（如烤箱、蒸氣室）。",
+      "一個月內眉毛部位請勿進行染眉，並暫停使用美白或酸類保養品（如 A 酸、果酸、杏仁酸等）。",
+      "恢復期間請勿摳抓撕除眉毛部位的結痂或皮屑，以免影響留色效果。",
+      "若有安排醫美雷射療程，建議與霧眉間隔 4 週以上，以免影響留色；若為溫和保養療程，請務必告知操作人員避開眉毛區域。",
+      "返家後如有任何疑問，歡迎隨時透過 LINE 聯繫諮詢！"
+    ]
+  }
+];
+
+// Q&A - 唇部
+const LIPS_QA_LIST = [
+  {
+    question: "Q：霧唇與光感淡色的差異？以及怎麼選擇？",
+    answer: [
+      "霧唇（透亮霧唇）：目標是打造像塗了潤色護唇膏的妝感，改善蒼白或暗沈，讓嘴唇有氣色。適合想要有妝感、不想擦口紅的人。",
+      "光感淡色：專門針對嚴重烏唇、黑唇或卡色進行「轉色」處理，目標是將深色淡化還原成健康的粉嫩底色，不強調上色。適合唇色極深、想先改善底色的人。"
+    ]
+  },
+  {
+    question: "Q：什麼是霧唇？霧唇能修飾什麼困擾？",
+    answer: [
+      "採用通透自然的定妝技法，非傳統「填滿色塊」的方式，做完呈現如同塗了潤色護唇膏般自然且粉嫩好氣色。",
+      "霧唇能修飾「唇色暗沈」、「氣色蒼白」或「唇色不均」的狀況，也能微調唇形，讓雙唇隨時保持紅潤氣色，素顏也不顯病氣。"
+    ]
+  },
+  {
+    question: "Q：霧唇能維持多久？",
+    answer: [
+      "一般約可維持 3-5 年。實際留色時間會依據個人新陳代謝速度及日常保養習慣而有所不同。"
+    ]
+  },
+  {
+    question: "Q：多久回去補色呢？",
+    answer: [
+      "我們有包含6個月內唇色調整。",
+      "之後依照個人想要紅潤顯色的程度可以半年或一年定期回來補色，顏色疊加也會更顯色和持久。"
+    ]
+  },
+  {
+    question: "Q：唇色很深（烏唇）可以做嗎？",
+    answer: [
+      "非常建議做霧唇來調整唇色，關於暗沈唇色的調整，需要時間的醞釀。黑唇或烏唇在操作後，約需等待 1 至 1.5 個月，色彩才會逐漸轉色平衡，展現出通透的質感。"
+    ]
+  },
+  {
+    question: "Q：霧唇會腫或痛嗎？",
+    answer: [
+      "過程舒適度高，大多數客人僅感覺到輕微震動。",
+      "少部分客人術後可能會有些微腫脹感（類似剛哭過或吃完麻辣鍋的感覺），約 1-3 天內會自然消退，隔天即可正常上班。"
+    ]
+  },
+  {
+    question: "Q：需要休息幾天？恢復期多久？",
+    answer: [
+      "不需要請假休息。恢復期約 3-5 天，期間會有像嘴唇乾裂的薄皮脫落，請勿摳撕，讓其自然代謝即可。",
+      "脫皮完成後顏色會變淡、更自然通透。"
+    ]
+  },
+  {
+    question: "Q：可以指定口紅色號嗎？",
+    answer: [
+      "霧唇是一門調和的藝術。這是霧唇顏色與原有唇色的融合技術。由於每位貴賓的原生唇底色不同，我們無法像選購口紅般指定特定色號，而是根據您目前唇色的狀況來做調整，調配出最適合您的專屬色調。"
+    ]
+  }
+];
+
+const LIPS_INFO = [
+  {
+    title: "施作前準備與保養",
+    sections: [
+      { subtitle: "施作前三天", items: ["請避免飲酒、熬夜，保持良好的作息和健康狀態。", "請暫停使用任何含有刺激性成分的唇部產品（如去角質、酸類）。", "請多喝水，並勤擦護唇膏做好保濕，晚上可使用凡士林厚敷、使用保濕唇膜，避免乾燥脫皮。"] },
+      { subtitle: "皮膚與醫美狀況", items: ["若有唇皰疹體質（曾經長過即算），建議預先至藥局購買口服藥，於施作前服用，以預防免疫力下降時誘發。", "若近期進行過唇部醫美療程（如玻尿酸填充），請務必確認已完全修復定型，再安排霧唇。"] }
+    ]
+  },
+  {
+    title: "健康狀況禁忌",
+    note: "為確保您的安全與成效，若有以下狀況，請斟酌或暫緩預約：",
+    items: [
+      "糖尿病",
+      "B 型肝炎、血液傳染疾病",
+      "紅斑性狼瘡",
+      "臉部蟹足腫",
+      "憂鬱症",
+      "完美主義者"
+    ],
+    warning: "⚠️ 請務必誠實告知健康狀況，若因未告知導致術後恢復不如預期，本店恕難負責。"
+  },
+  {
+    title: "術後居家護理",
+    items: [
+      "術後 3 天內飲食建議避開滾燙熱湯、海鮮及刺激辛辣食物。",
+      "餐後請以飲用水漱口，輕輕帶走食物殘渣，保持唇部潔淨，並隨時補擦修護霜維持滋潤。",
+      "皮屑脫落期間請勿用手撕除，以免造成顏色不均或受傷，請耐心等待其自然代謝。"
+    ]
+  }
+];
+
+// Q&A - 眼線
+const EYELINER_QA_LIST = [
+  {
+    question: "Q：什麼是美瞳眼線？",
+    answer: [
+      "美瞳眼線是操作在睫毛根部，填補睫毛空隙的半永久自然眼線。",
+      "睜眼時卻能感覺睫毛變濃密、眼神更放大深邃有神，呈現最自然的「偽素顏」效果。"
+    ]
+  },
+  {
+    question: "Q：做眼線會痛嗎？",
+    answer: [
+      "近無痛感，大多客人都是舒服睡著。"
+    ]
+  },
+  {
+    question: "Q：我有接睫毛可以做眼線嗎？",
+    answer: [
+      "不可以。請務必在預約前「卸除」假睫毛，以免影響操作視野及留色效果。",
+      "操作完眼線後，建議等待 1 週皮屑完全脫落後，再進行接睫毛。"
+    ]
+  }
+];
+
+const EYELINER_INFO = [
+  {
+    title: "施作前保養與準備",
+    sections: [
+      { subtitle: "施作前三天", items: ["避免喝酒和熬夜，保持良好的作息和健康狀態。"] },
+      { subtitle: "皮膚與眼睛狀況", items: ["若剛做完眼部手術，請至少修復三個月後再進行霧眼線。", "做眼線前請勿嫁接睫毛，如需卸除，需支付卸除費 300 元。", "若有眼睛不適、長針眼，請待修復完畢後再操作。", "操作當天請勿配戴隱形眼鏡，建議配戴一般眼鏡前來。"] }
+    ]
+  },
+  {
+    title: "健康狀況限制",
+    note: "若有以下健康狀況，請勿進行操作：",
+    items: [
+      "糖尿病",
+      "B 型肝炎、血液傳染疾病",
+      "紅斑性狼瘡",
+      "臉部蟹足腫",
+      "憂鬱症",
+      "完美主義者"
+    ],
+    warning: "⚠️ 請務必誠實告知健康狀況。"
+  },
+  {
+    title: "其他注意事項",
+    items: [
+      "每位客人的眼型、眼皮皺摺不會完全對稱，我們能做到協調但無法完全一模一樣，接受此情況才預約哦！"
+    ]
+  },
+  {
+    title: "術後保養",
+    items: [
+      "術後 24 小時內眼部請勿碰水。",
+      "隔天起床若有些微浮腫為正常現象，可冰敷舒緩。",
+      "一週內暫停使用睫毛膏、眼線筆及眼部卸妝油，避免影響留色。"
+    ]
+  }
+];
+
+// Q&A - 睫毛
+const LASHES_QA_LIST = [
+  {
+    question: "Q：什麼是睫毛管理？",
+    answer: [
+      "這不是接睫毛，也不是傳統燙睫毛。",
+      "我們使用自己的真睫毛，透過含有營養成分的產品，調整毛流方向並維持。",
+      "過程舒適，不會有異物感及不適感。",
+      "同時進行深層護髮，讓原生睫毛呈現自然的捲翹弧度，眼睛瞬間放大有神。"
+    ]
+  },
+  {
+    question: "Q：做完可以畫眼妝跟刷睫毛膏嗎？",
+    answer: [
+      "可以的！這正是睫毛管理的優點之一。",
+      "完成後您可以正常化妝、刷睫毛膏及卸妝（包含使用卸妝油），完全不影響生活習慣，且有了捲翹的基礎，刷上睫毛膏後效果會更驚艷。"
+    ]
+  },
+  {
+    question: "Q：可以維持多久？",
+    answer: [
+      "效果約可維持一個半至兩個月。實際時間會依據每個人睫毛的生長週期與代謝速度而定。",
+      "當新睫毛長出來、舊睫毛代謝掉後，捲翹度會自然恢復原狀。"
+    ]
+  },
+  {
+    question: "Q：睫毛很短或很稀疏可以做嗎？",
+    answer: [
+      "可以的。只要有睫毛都能操作，操作後視覺上會有延長的效果。",
+      "但若睫毛過於受損或空洞太大，效果可能會受限，建議可先傳照片諮詢。"
+    ]
+  }
+];
+
+const LASHES_INFO = [
+  {
+    title: "注意事項與保養",
+    items: [
+      "請確認無嫁接睫毛（若需現場卸除，需支付卸除費）。",
+      "建議素眼前往。若有眼妝，操作過程可能會破壞妝容，如後續有行程請自備補妝產品。",
+      "操作全程請眼睛放鬆，避免用力閉眼、抖動則會影響操作，當作在睡覺就可以了☺️",
+      "當天施作完先避免刷睫毛膏。",
+      "術後請避免搓揉眼睛，並請勿使用睫毛夾，這樣能讓捲翹度維持得更好、更持久。"
+    ]
+  }
+];
+
+const PRICE_LIST = [
+  {
+    category: "眉", 
+    items: [
+      { name: "精緻霧眉", price: "$ 8,800", note: "含三個月內補色一次" },
+      { name: "他店舊底改眉", price: "+ $ 500", note: "需拍照回傳評估溝通" },
+    ]
+  },
+  {
+    category: "唇", 
+    items: [
+      { name: "透亮霧唇", price: "$ 9,800", note: "包含 6 個月內調整唇色" },
+      { name: "光感淡色", price: "$ 6,800", note: "調整暗沈/卡色\n(非上色，含3個月內服務)" },
+    ]
+  },
+  {
+    category: "眼", 
+    items: [
+      { name: "美瞳眼線", price: "$ 5,800", note: "自然深邃感更有神" },
+    ]
+  },
+  {
+    category: "睫毛", 
+    items: [
+      { name: "睫毛管理", price: "$ 1,200", note: "原生睫毛捲翹塑形、無異物感、可刷睫毛膏" },
+    ]
+  }
+];
+
+// 舊客補色資料 (分為眉、唇、眼)
+const TOUCH_UP_BROWS = {
+  category: "眉",
+  items: [
+      { name: "半年內", price: "$ 2,000", note: "" },
+      { name: "一年內", price: "$ 2,800", note: "" },
+      { name: "一年以上", price: "$ 3,800", note: "" },
+      { name: "超過兩年以上\n中途他店操作", price: "享原價65折優惠", note: "視為重新操作" },
+  ]
+};
+
+const TOUCH_UP_LIPS = {
+  category: "唇",
+  items: [
+      { name: "霧唇補色", price: "$ 3,800", note: "" },
+      { name: "光感淡色", price: "$ 2,500", note: "調整暗沈/卡色" },
+  ]
+};
+
+const TOUCH_UP_EYES = {
+  category: "眼",
+  items: [
+      { name: "美瞳眼線", price: "$ 2,800", note: "" },
+  ]
+};
+
+// 輔助函式：將 Google Drive View 連結轉換為更穩定的 Thumbnail 直接連結
+const getDriveDirectLink = (id) => {
+  return `https://drive.google.com/thumbnail?id=${id}&sz=w1920`;
+};
+
+// 輔助函式：從 Google Drive 網址中提取檔案 ID
+const extractDriveId = (url) => {
+  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  return match ? match[1] : url; 
+};
+
+// 更新後的作品集資料結構
+const GALLERY_ALBUMS = [
+  {
+    id: 1,
+    title: '半永久精緻霧眉',
+    category: 'Eyebrows',
+    cover: getDriveDirectLink('1bfZJNDb93A38NAWmJtGvEElqzfnvWrQD'),
+    type: 'album',
+    media: [
+      { type: 'image', url: getDriveDirectLink('1bfZJNDb93A38NAWmJtGvEElqzfnvWrQD') },
+      { type: 'image', url: getDriveDirectLink('19lI68ZqzRettgVT4euBnU7CLSjZuC-zj') },
+      { type: 'image', url: getDriveDirectLink('1Dd0Ow_KVWH1JtVxrA50UKqrSHJIo2_zE') },
+      { type: 'image', url: getDriveDirectLink('1ZBDi3kb6oRS2L1pkjBhRT5cZ0zJiHBiM') },
+      { type: 'image', url: getDriveDirectLink('1MNXrsn5M83WWPsnfQjbLuXPh8uDCZ8Uq') },
+      { type: 'video', url: 'https://drive.google.com/file/d/1nWQsoVFnT09UHkiZ8eXVP_2eSVc3SArb/preview' }, 
+      { type: 'image', url: getDriveDirectLink('1nAS_7KK-0FacF4enirEKpGXfqMBaMDb7') },
+      { type: 'image', url: getDriveDirectLink('15Rb-71X5cbx3j9zRmJb76-f_k5lFrXRi') },
+    ]
+  },
+  {
+    id: 2,
+    title: '睫毛捲翹管理',
+    category: 'Lashes',
+    cover: getDriveDirectLink('11iAdaxsCIs4iPIX1OrkIFu6hiJts_OHz'),
+    type: 'album',
+    media: [
+      { type: 'image', url: getDriveDirectLink('11iAdaxsCIs4iPIX1OrkIFu6hiJts_OHz') },
+      { type: 'image', url: getDriveDirectLink('1SgpC2Ni2AAUbxwi-D36zJMpWOpe30d0M') },
+      { type: 'image', url: getDriveDirectLink('1B9MjXYLlGFDImM8YfWKEQExbv2HVHgJ0') },
+      { type: 'image', url: getDriveDirectLink('1oUbPr_zXKEO_bnaiGi8Eu6vBBzMZEEGO') }
+    ]
+  },
+  {
+    id: 3,
+    title: '霧唇定妝作品',
+    category: 'Lips',
+    cover: getDriveDirectLink('1SWfLsXxHUnQEgdzZJ474jia4h8lSdsKN'),
+    type: 'album',
+    media: [
+      { type: 'image', url: getDriveDirectLink('1SWfLsXxHUnQEgdzZJ474jia4h8lSdsKN') },
+      { type: 'image', url: getDriveDirectLink('1NFfmViBdSQrVMScF7aud6VfT-jZjiGdB') },
+      { type: 'image', url: getDriveDirectLink('1ydiu6LOKxpkJsR8cPXNT0_CQHziKRHET') }
+    ]
+  }
+];
+
+const GOOGLE_MAPS_LINK = "https://maps.app.goo.gl/KZgXKhMfGDZEBmzs9";
+
+const TESTIMONIALS = [
+  {
+    name: "Emily Chen",
+    service: "自然霧眉",
+    text: "老師非常細心，溝通眉型的時候很有耐心，成果超級自然，完全是我喜歡的樣子！",
+    stars: 5,
+    date: "2 週前"
+  },
+  {
+    name: "Sarah Lin",
+    service: "霧唇",
+    text: "本來很怕痛，結果過程幾乎沒感覺。現在早上起床氣色都很好，省了好多化妝時間。",
+    stars: 5,
+    date: "1 個月前"
+  },
+  {
+    name: "Jessica Wu",
+    service: "角蛋白美睫",
+    text: "環境很舒服，做完睫毛很翹很持久，推推！",
+    stars: 5,
+    date: "3 個月前"
+  }
+];
+
+const LOCATION_INFO = {
+  address: "桃園市領航南路三段 (詳細地址預約後告知)",
+  transport: "桃園高鐵站、機場捷運 A18 站，步行約 10 分鐘",
+  landmarks: "華泰名品城 (GLORIA OUTLETS)、Xpark、IKEA、UNIQLO",
+  mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.6726269492483!2d121.21885167632888!3d25.01123767783124!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a7cb906d23d3%3A0x5cea9d9e5854ba3a!2z6Z2S5Z-U6Zyn55yJIOWvqee-juiXneihkyBZc2V1bHRvIC5hcnTvvZznsr7nt7vpnKfnnInvvZzpnKfllIfnn6_mraPvvZznhKHlibXmt6HoibIg6Zmk6Imy772c552r5q-b6KeS6JuL55m9772c5pWZ5a24772cIOS_ruecie-9nOmcp-eciSDoj6_ms7DlkI3lk4Hln44g5Lit5aOi6Zyn55yJIOahg-Wckumcp-eciSDlpKflnJLpnKfnnIk!5e0!3m2!1szh-TW!2stw!4v1766666455944!5m2!1szh-TW!2stw"
+};
+
+
+// ------------------- 組件設計 -------------------
+
+// 燈箱組件 (Lightbox)
+const Lightbox = ({ album, initialIndex = 0, onClose }) => {
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+
+  // 鍵盤導航支援
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowRight') nextImage();
+      if (e.key === 'ArrowLeft') prevImage();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentIndex, onClose]); 
+
+  const nextImage = (e) => {
+    if(e) e.stopPropagation();
+    if (album.media.length > 1) {
+      setCurrentIndex((prev) => (prev + 1) % album.media.length);
+    }
+  };
+
+  const prevImage = (e) => {
+    if(e) e.stopPropagation();
+    if (album.media.length > 1) {
+      setCurrentIndex((prev) => (prev - 1 + album.media.length) % album.media.length);
+    }
+  };
+
+  const currentItem = album.media[currentIndex];
+
+  return (
+    <div 
+      className="fixed inset-0 z-[100] bg-black/70 flex items-center justify-center p-4 backdrop-blur-sm"
+      onClick={onClose}
+      onContextMenu={(e) => e.preventDefault()} 
+    >
+      <div 
+        className="relative bg-transparent w-full md:w-1/3 max-h-[90vh] flex flex-col items-center justify-center select-none"
+        onClick={(e) => e.stopPropagation()} 
+      >
+        <button 
+          onClick={onClose}
+          className="absolute -top-12 right-0 text-white/80 hover:text-white transition-colors"
+        >
+          <X className="w-8 h-8" />
+        </button>
+
+        <div className={`relative w-full shadow-2xl rounded-sm overflow-hidden group flex items-center justify-center ${currentItem.type === 'video' ? 'aspect-[9/16] bg-black' : 'bg-transparent'}`}>
+          
+          {currentItem.type === 'video' ? (
+            <iframe 
+              src={`https://drive.google.com/file/d/${extractDriveId(currentItem.url)}/preview?autoplay=1&mute=1`}
+              className="w-full h-full border-0"
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+              title="Video Player"
+            />
+          ) : (
+            <img 
+              src={currentItem.url} 
+              alt={`${album.title} - ${currentIndex + 1}`}
+              className="w-full h-auto max-h-[80vh] object-contain mx-auto select-none"
+              referrerPolicy="no-referrer"
+              draggable="false"
+              onContextMenu={(e) => e.preventDefault()}
+            />
+          )}
+          
+          <div className="absolute top-[66%] left-0 right-0 text-center pointer-events-none select-none z-10">
+            <span className="text-white/60 text-xs md:text-sm font-serif tracking-[0.3em] drop-shadow-md uppercase bg-black/10 px-2 py-1 rounded-full backdrop-blur-[1px]">
+              Yseulto.art 審美藝術
+            </span>
+          </div>
+
+          {album.media.length > 1 && (
+            <>
+              <button 
+                onClick={prevImage}
+                className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 text-white/70 hover:bg-black/40 hover:text-white transition-all opacity-0 group-hover:opacity-100 z-20"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button 
+                onClick={nextImage}
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 text-white/70 hover:bg-black/40 hover:text-white transition-all opacity-0 group-hover:opacity-100 z-20"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </>
+          )}
+
+          {album.media.length > 1 && (
+            <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-20">
+              {album.media.map((_, idx) => (
+                <div 
+                  key={idx}
+                  className={`h-1 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-4 bg-white' : 'w-1.5 bg-white/40'}`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="mt-4 text-center">
+          <h4 className="text-white font-serif tracking-widest text-lg">{album.title}</h4>
+          <p className="text-white/60 text-xs mt-1 uppercase tracking-wide">{album.category}</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const SocialButton = ({ href, icon: Icon, label, colorClass, bgColorClass, borderColorClass }) => (
+  <a 
+    href={href} 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className={`
+      flex items-center justify-center gap-2 px-5 py-2.5 rounded-full
+      transform transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl
+      ${bgColorClass} ${colorClass} ${borderColorClass} border w-full sm:w-auto min-w-[130px]
+      group overflow-hidden relative
+    `}
+  >
+    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+    <span className="relative z-10 flex items-center gap-2">
+      {Icon}
+      <span className="font-medium tracking-wide text-xs">{label}</span>
+    </span>
+  </a>
+);
+
+const SectionTitle = ({ children }) => (
+  <h3 className="text-xl font-bold text-[#b08d55] mb-5 flex items-center gap-3 mt-8 first:mt-0 relative">
+    <span className="w-8 h-[3px] bg-[#fed455]"></span>
+    <span className="tracking-widest">{children}</span>
+    <span className="w-8 h-[3px] bg-[#fed455]"></span>
+  </h3>
+);
+
+// 規則列表項目 (預約須知用 - 黑色文字)
+const RuleListItem = ({ children }) => (
+  <li className={`flex items-start gap-3 mb-3 leading-relaxed text-[#4b4b4b] text-sm md:text-base`}>
+    <span className={`mt-2 min-w-[5px] h-[5px] rounded-full bg-[#fed455]`} />
+    <span>{children}</span>
+  </li>
+);
+
+// 內文列表項目 (服務說明用)
+const InfoListItem = ({ children }) => (
+  <li className="flex items-start gap-3 mb-2 leading-relaxed text-[#594a42] text-sm">
+    <span className="mt-2 min-w-[4px] h-[4px] rounded-full bg-[#fed455]" />
+    <span>{children}</span>
+  </li>
+);
+
+// Accordion 組件 (摺疊選單)
+const AccordionItem = ({ title, children, defaultOpen = false }) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+
+  return (
+    <div className="border-b border-[#fee9a7] last:border-0">
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between py-5 px-2 text-left hover:bg-[#fffefb]/50 transition-colors group"
+      >
+        <h4 className="font-medium text-[#433422] tracking-wider text-base group-hover:text-[#b08d55] transition-colors flex items-center gap-2">
+           {title.includes("Q：") && <HelpCircle className="w-4 h-4 text-[#fed455]" />}
+           {title}
+        </h4>
+        <div className={`
+          w-8 h-8 rounded-full border border-[#fed455] flex items-center justify-center
+          transition-all duration-300 ${isOpen ? 'bg-[#fed455] text-white rotate-180' : 'text-[#fed455]'}
+        `}>
+          <ChevronDown className="w-4 h-4" />
+        </div>
+      </button>
+      <div className={`
+        overflow-hidden transition-all duration-300 ease-in-out
+        ${isOpen ? 'max-h-[800px] opacity-100 pb-6' : 'max-h-0 opacity-0'}
+      `}>
+        <div className="px-4 text-[#594a42]">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// 作品集卡片
+const GalleryCard = ({ item, onClick }) => (
+  <div 
+    className="group relative bg-[#fffefb] overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 ease-out border border-[#f0eadd]"
+    onClick={() => onClick(item)}
+  >
+    <div className="aspect-[4/5] overflow-hidden relative">
+      <img 
+        src={item.cover} 
+        alt={item.title}
+        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 select-none"
+        loading="lazy"
+        referrerPolicy="no-referrer"
+        draggable="false"
+      />
+      
+      {item.type === 'video' && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/20 transition-colors">
+          <PlayCircle className="w-10 h-10 text-white/90 drop-shadow-md" />
+        </div>
+      )}
+      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#433422]/80 to-transparent p-4 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+        <p className="text-[#fdf5d8] text-xs tracking-wider font-light mb-0.5 uppercase">{item.category}</p>
+        <p className="text-white text-sm font-medium tracking-wide">{item.title}</p>
+      </div>
+    </div>
+  </div>
+);
+
+// 評價卡片
+const ReviewCard = ({ review }) => (
+  <a 
+    href={GOOGLE_MAPS_LINK}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="bg-[#fffefb] p-6 border border-[#f0eadd] shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-full rounded-lg group cursor-pointer relative"
+  >
+    <div className="flex justify-between items-start mb-3">
+      <div className="flex items-center gap-2">
+        <div className="w-8 h-8 rounded-full bg-[#fbbc05] text-white flex items-center justify-center font-bold text-xs">
+          {review.name.charAt(0)}
+        </div>
+        <div>
+          <span className="font-sans text-[#433422] font-bold text-sm block">{review.name}</span>
+          <span className="text-[#99815c] text-[10px] block">{review.date}</span>
+        </div>
+      </div>
+      {/* 修改：改為讚的圖示 */}
+      <ThumbsUp className="w-5 h-5 text-[#b08d55] opacity-80" />
+    </div>
+
+    <div className="flex gap-0.5 mb-3 text-[#fbbc05]">
+      {[...Array(review.stars)].map((_, i) => <Star key={i} className="w-4 h-4 fill-current stroke-none" />)}
+    </div>
+
+    <p className="text-[#594a42] text-sm leading-relaxed mb-6 flex-grow line-clamp-4">
+      {review.text}
+    </p>
+    
+    <div className="mt-auto pt-4 border-t border-[#f0eadd]/50 flex justify-between items-center">
+       <span className="text-[#99815c] text-xs bg-[#fff9e6] px-2 py-0.5 rounded-full border border-[#fee9a7]/50">{review.service}</span>
+       <span className="text-xs text-[#4285F4] font-medium opacity-0 group-hover:opacity-100 transition-opacity">在 Google 上閱讀</span>
+    </div>
+  </a>
+);
+
+export default function App() {
+  const [activeTab, setActiveTab] = useState('home'); 
+  const [mainNav, setMainNav] = useState('home'); 
+  
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [selectedAlbum, setSelectedAlbum] = useState(null);
+
+  useEffect(() => {
+    const handleContextMenu = (e) => e.preventDefault();
+    const handleDragStart = (e) => {
+      if (e.target.tagName === 'IMG') e.preventDefault();
+    };
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'C')) e.preventDefault();
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'a' || e.key === 'A')) e.preventDefault();
+    };
+
+    document.addEventListener('contextmenu', handleContextMenu);
+    document.addEventListener('dragstart', handleDragStart);
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('dragstart', handleDragStart);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  const openLightbox = (album) => {
+    setSelectedAlbum(album);
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+    setSelectedAlbum(null);
+  };
+
+  const serviceSubTabs = [
+    { id: 'rules', label: '預約須知', icon: ClipboardList },
+    { id: 'eyebrows', label: '精緻霧眉', icon: EyebrowIcon },
+    { id: 'lips', label: '唇色校正', icon: LipsIcon },
+    { id: 'eyeliner', label: '美瞳眼線', icon: Eye },
+    { id: 'lashes', label: '睫毛管理', icon: Clock },
+  ];
+
+  const mainTabs = [
+    { id: 'services', label: '服務項目', icon: Sparkles, hasSubmenu: true },
+    { id: 'pricelist', label: '價目表', icon: DollarSign }, 
+    { id: 'gallery', label: '作品集', icon: ImageIcon },
+    { id: 'reviews', label: '好評反饋', icon: MessageSquare },
+    { id: 'location', label: '位置資訊', icon: MapPinIcon },
+    { id: 'courses', label: '教學課程', icon: GraduationCap },
+  ];
+
+  const handleMainTabClick = (tabId) => {
+    setMainNav(tabId);
+    if (tabId === 'services') {
+      setActiveTab('rules'); 
+    } else {
+      setActiveTab(tabId);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const renderContent = () => {
+    switch(activeTab) {
+      case 'home':
+        return (
+          <div className="space-y-8 animate-fadeIn">
+            <div className="bg-[#fffefb] p-8 md:p-12 shadow-sm border border-[#fee9a7]/50 text-center rounded-lg relative overflow-hidden">
+               <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#fed455] via-[#fee9a7] to-[#fed455]"></div>
+               <div className="absolute -left-10 -bottom-10 opacity-5 pointer-events-none">
+                  <Sparkles className="w-40 h-40 text-[#b08d55]" />
+               </div>
+
+               <div className="flex justify-center">
+                 <SectionTitle>審美藝術</SectionTitle>
+               </div>
+                
+               <div className="max-w-lg mx-auto space-y-6 text-[#594a42] leading-loose text-sm md:text-base tracking-wide">
+                 <p>
+                   美麗來自內心的映照，<br/>
+                   不追逐絢麗的光。
+                 </p>
+                 <p>
+                   透過細膩的技法，<br/>
+                   還原您與生俱來的從容與優雅。
+                 </p>
+                 <p className="font-serif text-[#b08d55] pt-4 tracking-wider leading-relaxed">
+                   在 Yseulto.art<br/>
+                   遇見安靜而有力量的自己
+                 </p>
+               </div>
+
+               <div className="flex justify-center gap-6 mt-10">
+                 <button 
+                   onClick={() => handleMainTabClick('services')}
+                   className="px-8 py-2.5 border border-[#b08d55] text-[#b08d55] rounded-full text-sm tracking-widest hover:bg-[#b08d55] hover:text-white transition-all duration-300"
+                 >
+                   瀏覽服務
+                 </button>
+                 <a 
+                   href="https://lin.ee/ywqbFuu" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   className="px-8 py-2.5 bg-[#433422] text-[#fff9e6] rounded-full text-sm tracking-widest hover:bg-[#5e4b35] transition-all duration-300 shadow-md"
+                 >
+                   立即預約
+                 </a>
+               </div>
+            </div>
+          </div>
+        );
+
+      case 'rules':
+        return (
+          <div className="space-y-6 animate-fadeIn">
+            <div className="bg-[#fffefb] p-8 shadow-sm border border-[#fee9a7]/50 relative overflow-hidden rounded-lg">
+               <div className="absolute -right-8 -top-8 text-[8rem] font-serif text-[#fed455]/10 opacity-80 select-none pointer-events-none rotate-12">
+                 Rules
+               </div>
+              <div className="flex justify-center mb-6">
+                <SectionTitle>預約與店內守則</SectionTitle>
+              </div>
+              <ul className="space-y-3 relative z-10 pl-2">
+                {SHOP_RULES[0].content.map((rule, idx) => (
+                  <RuleListItem key={idx}>
+                    {rule.text}
+                  </RuleListItem>
+                ))}
+              </ul>
+            </div>
+
+            <div className="bg-[#fffefb] p-8 shadow-sm border border-[#fee9a7]/50 relative overflow-hidden rounded-lg mt-6">
+              <div className="flex justify-center">
+                <SectionTitle>如何預約/諮詢</SectionTitle>
+              </div>
+              
+              <div className="flex flex-col items-center gap-6 mt-4">
+                <div className="bg-[#fff9e6] p-6 rounded-lg border border-[#fee9a7] w-full max-w-md relative group">
+                  <p className="text-[#594a42] text-sm mb-4 font-medium text-center">
+                    請複製以下格式，傳送至官方 LINE：
+                  </p>
+                  <div className="text-[#594a42] text-sm leading-loose space-y-1 select-text cursor-text" onContextMenu={(e) => e.stopPropagation()}>
+                    <p>您的姓名：</p>
+                    <p>電話：</p>
+                    <p>預約項目：</p>
+                    <p>理想的時間與日期：（可填寫2-3個時段）</p>
+                  </div>
+                </div>
+
+                <a 
+                  href="https://lin.ee/ywqbFuu" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 px-8 py-3 bg-[#06C755] text-white rounded-full hover:bg-[#05b64d] transition-all duration-300 shadow-md group"
+                >
+                  <LineIcon className="w-6 h-6" />
+                  <span className="tracking-widest font-medium">立即預約</span>
+                </a>
+
+                <p className="text-[#99815c] text-xs text-center leading-relaxed">
+                  我們會有專人為您服務，<br/>
+                  完成預約後會給您詳細地址資訊
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'pricelist':
+        return (
+          <div className="space-y-8 animate-fadeIn">
+            <div className="text-center mb-10">
+              <div className="flex justify-center"><SectionTitle>價目表</SectionTitle></div>
+              <p className="text-[#b08d55] text-xs uppercase tracking-[0.3em] mt-3">服務項目</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {PRICE_LIST.map((category, idx) => (
+                <div key={idx} className="bg-[#fffefb] p-8 shadow-sm border border-[#fee9a7]/50 rounded-lg relative">
+                  <SectionTitle>{category.category}</SectionTitle>
+                  <ul className="space-y-2 mt-4"> 
+                    {category.items.map((item, i) => (
+                      <li key={i} className="flex justify-between items-baseline group border-b border-[#fee9a7]/30 pb-1.5 last:border-0 last:pb-0"> 
+                        <div className="flex-1 pr-4">
+                          <span className="text-[#4b4b4b] font-medium text-lg block group-hover:text-[#b08d55] transition-colors whitespace-pre-line">{item.name}</span> 
+                          <span className="text-[#594a42] text-xs whitespace-pre-line leading-relaxed">{item.note}</span>
+                        </div>
+                        <span className="text-[#b08d55] font-serif font-medium text-base tracking-widest shrink-0">{item.price}</span> 
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-16 text-center mb-8">
+                <div className="flex justify-center"><SectionTitle>舊客單次補色</SectionTitle></div>
+                <p className="text-[#8a6d3b] text-sm tracking-widest mt-4 bg-[#fff9e6] inline-block px-4 py-1.5 rounded-full border border-[#fee9a7] font-medium shadow-sm">
+                   僅限本店操作過之顧客
+                </p>
+                <p className="text-[#8a6d3b] text-xs tracking-widest mt-2">
+                   依最後一次操作日期計算
+                </p>
+            </div>
+
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-[#fffefb] p-8 shadow-sm border border-[#fee9a7]/50 rounded-lg relative">
+                  <SectionTitle>{TOUCH_UP_BROWS.category}</SectionTitle>
+                  <ul className="space-y-2 mt-4">
+                    {TOUCH_UP_BROWS.items.map((item, i) => (
+                      <li key={i} className="flex justify-between items-baseline group border-b border-[#fee9a7]/30 pb-1.5 last:border-0 last:pb-0"> 
+                        <div className="flex-1 pr-4">
+                          <span className="text-[#4b4b4b] font-medium text-lg block group-hover:text-[#b08d55] transition-colors whitespace-pre-line">{item.name}</span>
+                          {item.note && <span className="text-[#594a42] text-xs">{item.note}</span>}
+                        </div>
+                        <span className="text-[#b08d55] font-serif font-medium text-base tracking-widest shrink-0">{item.price}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="bg-[#fffefb] p-8 shadow-sm border border-[#fee9a7]/50 rounded-lg relative">
+                  <SectionTitle>{TOUCH_UP_LIPS.category}</SectionTitle>
+                  <ul className="space-y-2 mt-4">
+                    {TOUCH_UP_LIPS.items.map((item, i) => (
+                      <li key={i} className="flex justify-between items-baseline group border-b border-[#fee9a7]/30 pb-1.5 last:border-0 last:pb-0"> 
+                        <div className="flex-1 pr-4">
+                          <span className="text-[#4b4b4b] font-medium text-lg block group-hover:text-[#b08d55] transition-colors">{item.name}</span>
+                          {item.note && <span className="text-[#594a42] text-xs">{item.note}</span>}
+                        </div>
+                        <span className="text-[#b08d55] font-serif font-medium text-base tracking-widest shrink-0">{item.price}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1">
+                 <div className="bg-[#fffefb] p-8 shadow-sm border border-[#fee9a7]/50 rounded-lg relative">
+                  <SectionTitle>{TOUCH_UP_EYES.category}</SectionTitle>
+                  <ul className="space-y-2 mt-4">
+                    {TOUCH_UP_EYES.items.map((item, i) => (
+                      <li key={i} className="flex justify-between items-baseline group border-b border-[#fee9a7]/30 pb-1.5 last:border-0 last:pb-0"> 
+                        <div className="flex-1 pr-4">
+                          <span className="text-[#4b4b4b] font-medium text-lg block group-hover:text-[#b08d55] transition-colors">{item.name}</span> 
+                          {item.note && <span className="text-[#594a42] text-xs">{item.note}</span>}
+                        </div>
+                        <span className="text-[#b08d55] font-serif font-medium text-base tracking-widest shrink-0">{item.price}</span> 
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'gallery':
+        return (
+          <div className="space-y-8 animate-fadeIn">
+             <div className="text-center mb-10">
+               <div className="flex justify-center"><SectionTitle>作品集</SectionTitle></div>
+               <p className="text-[#b08d55] text-xs uppercase tracking-[0.3em] mt-3">精選案例</p>
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
+              {GALLERY_ALBUMS.map((item) => (
+                <GalleryCard key={item.id} item={item} onClick={openLightbox} />
+              ))}
+            </div>
+
+            <div className="text-center mt-10">
+               <a 
+                 href="https://www.instagram.com/yseulto.art/" 
+                 target="_blank" 
+                 rel="noopener noreferrer"
+                 className="inline-flex items-center gap-3 px-6 py-2 border border-[#fed455] text-[#b08d55] hover:bg-[#fed455] hover:text-white transition-all duration-300 text-sm tracking-widest uppercase rounded-full"
+               >
+                 查看更多作品 <ChevronRight className="w-3 h-3" />
+               </a>
+            </div>
+          </div>
+        );
+
+      case 'reviews':
+        return (
+          <div className="space-y-8 animate-fadeIn">
+            <div className="text-center mb-8">
+              <div className="flex justify-center"><SectionTitle>好評反饋</SectionTitle></div>
+              <p className="text-[#b08d55] text-xs uppercase tracking-[0.3em] mt-3">真實客戶心聲</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {TESTIMONIALS.map((review, idx) => (
+                <ReviewCard key={idx} review={review} />
+              ))}
+            </div>
+            <div className="text-center mt-8">
+               <a 
+                 href={GOOGLE_MAPS_LINK}
+                 target="_blank" 
+                 rel="noopener noreferrer"
+                 className="inline-flex items-center gap-3 px-6 py-2.5 bg-white border border-[#e0e0e0] text-[#5f6368] hover:bg-[#f8f9fa] hover:border-[#dadce0] hover:text-[#202124] transition-all duration-300 text-sm font-medium rounded-full shadow-sm"
+               >
+                 查看更多評論
+               </a>
+            </div>
+          </div>
+        );
+
+      case 'location':
+        return (
+          <div className="space-y-6 animate-fadeIn">
+             <div className="bg-[#fffefb] p-0 shadow-sm border border-[#fee9a7]/50 overflow-hidden rounded-lg">
+                <div className="w-full h-64 md:h-80 bg-[#fff9e6]">
+                  <iframe 
+                    src={LOCATION_INFO.mapUrl} 
+                    width="100%" 
+                    height="100%" 
+                    style={{border:0}} 
+                    allowFullScreen="" 
+                    loading="lazy" 
+                    title="Google Map"
+                    className="grayscale hover:grayscale-0 transition-all duration-500 opacity-90 hover:opacity-100"
+                  ></iframe>
+                </div>
+                <div className="p-8">
+                  <div className="flex justify-center mb-6">
+                    <SectionTitle>位置資訊</SectionTitle>
+                  </div>
+                  <div className="space-y-6 mt-6">
+                    <div className="flex gap-4 items-start">
+                      <div className="w-10 h-10 rounded-full bg-[#fff9e6] flex items-center justify-center flex-shrink-0 text-[#b08d55]">
+                        <MapPinIcon className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="font-serif text-[#433422] font-medium mb-1">工作室地址</h4>
+                        <p className="text-[#594a42] text-sm">{LOCATION_INFO.address}</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-4 items-start">
+                      <div className="w-10 h-10 rounded-full bg-[#fff9e6] flex items-center justify-center flex-shrink-0 text-[#b08d55]">
+                         <div className="font-bold text-xs">MRT</div>
+                      </div>
+                      <div>
+                        <h4 className="font-serif text-[#433422] font-medium mb-1">大眾運輸</h4>
+                        <p className="text-[#594a42] text-sm whitespace-pre-line">{LOCATION_INFO.transport}</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-4 items-start border-t border-[#fee9a7] pt-6 mt-2">
+                       <div className="w-10 h-10 rounded-full bg-[#fff9e6] flex items-center justify-center flex-shrink-0 text-[#b08d55]">
+                         <ShoppingBag className="w-4 h-4" />
+                      </div>
+                       <div>
+                        <h4 className="font-serif text-[#433422] font-medium mb-1">周邊地標</h4>
+                        <p className="text-[#594a42] text-sm leading-relaxed">{LOCATION_INFO.landmarks}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+             </div>
+          </div>
+        );
+
+      case 'courses':
+        return (
+          <div className="space-y-8 animate-fadeIn">
+            <div className="bg-[#fffefb] p-10 shadow-sm border border-[#fee9a7]/50 text-center rounded-lg">
+               <div className="w-20 h-20 bg-[#fff9e6] rounded-full flex items-center justify-center mx-auto mb-6 text-[#b08d55]">
+                  <GraduationCap className="w-10 h-10" />
+               </div>
+               <div className="flex justify-center">
+                 <SectionTitle>教學課程</SectionTitle>
+               </div>
+               
+               <div className="space-y-8 mt-8">
+                 <div className="border-b border-[#fee9a7]/50 pb-8 last:border-0 last:pb-0">
+                   <div className="flex justify-center mb-2"><SectionTitle>新手零基礎霧眉課程</SectionTitle></div>
+                   <p className="text-[#594a42] text-sm leading-loose max-w-lg mx-auto">
+                     很多想踏入美業的人，最擔心的就是『學了不會做』或『做了沒客人』。<br/>
+                     這堂課不只是教妳把眉毛做完，而是教妳如何觀察每張臉的骨骼與氣韻。<br/>
+                     擁有一技之長，意味著妳擁有了選擇生活的權利。<br/>
+                     我們將毫無保留地分享實戰經驗，省去妳自我摸索的撞牆期，讓這份技術成為妳自信與收入的堅實後盾。
+                   </p>
+                 </div>
+
+                 <div>
+                   <div className="flex justify-center mb-2"><SectionTitle>睫毛捲翹管理課程</SectionTitle></div>
+                   <p className="text-[#594a42] text-sm leading-loose max-w-lg mx-auto">
+                     這是一堂將變現能力最大化的『一日專修』課程。<br/>
+                     我們將獨家技法系統化拆解，您無需自行摸索，<br/>
+                     只需『完全複製』老師的手法，便能做出一模一樣的漂亮作品。<br/>
+                     以最短的時間成本，掌握這項高回客率的技術，<br/>
+                     為您的美業之路，開啟穩健的營收起點。
+                   </p>
+                 </div>
+               </div>
+
+               <div className="mt-8">
+                 <a 
+                   href="https://lin.ee/ywqbFuu" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   className="inline-block bg-[#433422] text-[#fff9e6] px-8 py-3 rounded-full text-sm tracking-widest hover:bg-[#b08d55] transition-colors duration-300 shadow-md"
+                 >
+                   諮詢課程細節
+                 </a>
+               </div>
+            </div>
+          </div>
+        );
+        
+      case 'eyebrows':
+        return (
+          <div className="space-y-6 animate-fadeIn">
+            <div className="bg-[#fffefb] p-8 shadow-sm border border-[#fee9a7]/50 rounded-lg">
+               <div className="flex justify-center mb-6">
+                  <SectionTitle>精緻霧眉</SectionTitle>
+               </div>
+                
+              <div className="mb-4">
+                <AccordionItem title="常見問答 Q&A" defaultOpen={false}>
+                  <div className="space-y-2 mt-2">
+                    {EYEBROW_QA_LIST.map((item, idx) => (
+                      <AccordionItem key={`qa-${idx}`} title={item.question}>
+                        {item.answer.map((ans, i) => (
+                          <p key={i} className="mb-2 text-[#594a42] text-sm leading-relaxed">{ans}</p>
+                        ))}
+                      </AccordionItem>
+                    ))}
+                  </div>
+                </AccordionItem>
+              </div>
+
+              {EYEBROW_INFO.map((section, idx) => (
+                <AccordionItem key={idx} title={section.title} defaultOpen={false}>
+                  {section.content && section.content.map((text, i) => (
+                    <p key={i} className="mb-3 text-[#594a42] text-sm leading-relaxed">{text}</p>
+                  ))}
+
+                  {section.sections && section.sections.map((sub, i) => (
+                    <div key={i} className="mb-6 last:mb-0 mt-4">
+                      {section.title.includes("Q：") ? (
+                        <h4 className="font-bold text-[#b08d55] mb-2 text-sm flex items-start gap-2">
+                           <span className="bg-[#fff9e6] px-2 py-0.5 rounded text-xs border border-[#fee9a7]">Q</span>
+                           {sub.subtitle.replace("Q：", "")}
+                        </h4>
+                      ) : (
+                        <h4 className="font-bold text-[#b08d55] mb-2 text-sm bg-[#fff9e6] inline-block px-3 py-1 rounded-full">
+                          {sub.subtitle}
+                        </h4>
+                      )}
+                       
+                      <ul className="mt-2">
+                        {sub.items.map((item, j) => <InfoListItem key={j}>{item}</InfoListItem>)}
+                      </ul>
+                    </div>
+                  ))}
+
+                  {section.note && <p className="mb-4 text-[#594a42] font-medium text-sm border-l-4 border-[#b08d55] pl-3 py-1 bg-[#fff9e6]/50">{section.note}</p>}
+                    
+                  {section.items && (
+                    <ul className="mt-2">
+                      {section.items.map((item, i) => <InfoListItem key={i}>{item}</InfoListItem>)}
+                    </ul>
+                  )}
+
+                  {section.warning && (
+                    <div className="mt-6 p-4 bg-[#fffbf0] text-[#8a6d3b] text-sm border border-[#fee9a7] rounded flex gap-3 items-start">
+                      <ShieldAlert className="w-5 h-5 flex-shrink-0 mt-0.5 text-[#fed455]" />
+                      <p className="leading-relaxed">{section.warning.replace('⚠️ ', '')}</p>
+                    </div>
+                  )}
+                </AccordionItem>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 'lips':
+        return (
+          <div className="space-y-6 animate-fadeIn">
+            <div className="bg-[#fffefb] p-8 shadow-sm border border-[#fee9a7]/50 rounded-lg">
+               <div className="flex justify-center mb-6">
+                  <SectionTitle>唇色校正</SectionTitle>
+               </div>
+              <div className="mb-4">
+                <AccordionItem title="常見問答 Q&A" defaultOpen={false}>
+                  <div className="space-y-2 mt-2">
+                    {LIPS_QA_LIST.map((item, idx) => (
+                      <AccordionItem key={`qa-${idx}`} title={item.question}>
+                        {item.answer.map((ans, i) => (
+                          <p key={i} className="mb-2 text-[#594a42] text-sm leading-relaxed">{ans}</p>
+                        ))}
+                      </AccordionItem>
+                    ))}
+                  </div>
+                </AccordionItem>
+              </div>
+              {LIPS_INFO.map((section, idx) => (
+                <AccordionItem key={idx} title={section.title} defaultOpen={false}>
+                  {section.sections && section.sections.map((sub, i) => (
+                    <div key={i} className="mb-6 last:mb-0 mt-4">
+                        <h4 className="font-bold text-[#b08d55] mb-2 text-sm bg-[#fff9e6] inline-block px-3 py-1 rounded-full">
+                          {sub.subtitle}
+                        </h4>
+                      <ul className="mt-2">
+                        {sub.items.map((item, j) => <InfoListItem key={j}>{item}</InfoListItem>)}
+                      </ul>
+                    </div>
+                  ))}
+                  {section.note && <p className="mb-4 text-[#594a42] font-medium text-sm border-l-4 border-[#b08d55] pl-3 py-1 bg-[#fff9e6]/50">{section.note}</p>}
+                  {section.items && (
+                    <ul className="mt-2">
+                      {section.items.map((item, i) => <InfoListItem key={i}>{item}</InfoListItem>)}
+                    </ul>
+                  )}
+                  {section.warning && (
+                    <div className="mt-6 p-4 bg-[#fffbf0] text-[#8a6d3b] text-sm border border-[#fee9a7] rounded flex gap-3 items-start">
+                      <ShieldAlert className="w-5 h-5 flex-shrink-0 mt-0.5 text-[#fed455]" />
+                      <p className="leading-relaxed">{section.warning.replace('⚠️ ', '')}</p>
+                    </div>
+                  )}
+                </AccordionItem>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 'eyeliner':
+        return (
+          <div className="space-y-6 animate-fadeIn">
+            <div className="bg-[#fffefb] p-8 shadow-sm border border-[#fee9a7]/50 rounded-lg">
+               <div className="flex justify-center mb-6">
+                  <SectionTitle>美瞳眼線</SectionTitle>
+               </div>
+              <div className="mb-4">
+                <AccordionItem title="常見問答 Q&A" defaultOpen={false}>
+                  <div className="space-y-2 mt-2">
+                    {EYELINER_QA_LIST.map((item, idx) => (
+                      <AccordionItem key={`qa-${idx}`} title={item.question}>
+                        {item.answer.map((ans, i) => (
+                          <p key={i} className="mb-2 text-[#594a42] text-sm leading-relaxed">{ans}</p>
+                        ))}
+                      </AccordionItem>
+                    ))}
+                  </div>
+                </AccordionItem>
+              </div>
+              {EYELINER_INFO.map((section, idx) => (
+                <AccordionItem key={idx} title={section.title} defaultOpen={false}>
+                  {section.sections && section.sections.map((sub, i) => (
+                    <div key={i} className="mb-6 last:mb-0 mt-4">
+                        <h4 className="font-bold text-[#b08d55] mb-2 text-sm bg-[#fff9e6] inline-block px-3 py-1 rounded-full">
+                          {sub.subtitle}
+                        </h4>
+                      <ul className="mt-2">
+                        {sub.items.map((item, j) => <InfoListItem key={j}>{item}</InfoListItem>)}
+                      </ul>
+                    </div>
+                  ))}
+                  {section.items && (
+                    <ul className="mt-2">
+                      {section.items.map((item, i) => <InfoListItem key={i}>{item}</InfoListItem>)}
+                    </ul>
+                  )}
+                  {section.note && <p className="mb-4 text-[#594a42] font-medium text-sm border-l-4 border-[#b08d55] pl-3 py-1 bg-[#fff9e6]/50">{section.note}</p>}
+                   {section.warning && (
+                    <div className="mt-6 p-4 bg-[#fffbf0] text-[#8a6d3b] text-sm border border-[#fee9a7] rounded flex gap-3 items-start">
+                      <ShieldAlert className="w-5 h-5 flex-shrink-0 mt-0.5 text-[#fed455]" />
+                      <p className="leading-relaxed">{section.warning.replace('⚠️ ', '')}</p>
+                    </div>
+                  )}
+                </AccordionItem>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 'lashes':
+        return (
+          <div className="space-y-6 animate-fadeIn">
+            <div className="bg-[#fffefb] p-8 shadow-sm border border-[#fee9a7]/50 rounded-lg">
+               <div className="flex justify-center mb-6">
+                  <SectionTitle>睫毛管理</SectionTitle>
+               </div>
+              <div className="mb-4">
+                <AccordionItem title="常見問答 Q&A" defaultOpen={false}>
+                  <div className="space-y-2 mt-2">
+                    {LASHES_QA_LIST.map((item, idx) => (
+                      <AccordionItem key={`qa-${idx}`} title={item.question}>
+                        {item.answer.map((ans, i) => (
+                          <p key={i} className="mb-2 text-[#594a42] text-sm leading-relaxed">{ans}</p>
+                        ))}
+                      </AccordionItem>
+                    ))}
+                  </div>
+                </AccordionItem>
+              </div>
+              {LASHES_INFO.map((section, idx) => (
+                <AccordionItem key={idx} title={section.title} defaultOpen={false}>
+                  <ul className="mt-2">
+                    {section.items.map((item, i) => <InfoListItem key={i}>{item}</InfoListItem>)}
+                  </ul>
+                </AccordionItem>
+              ))}
+            </div>
+          </div>
+        );
+        
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#fffefc] font-sans selection:bg-[#fed455] selection:text-white select-none">
+      {/* 頂部裝飾條 */}
+      <div className="h-1.5 bg-gradient-to-r from-[#fed455] via-[#fee9a7] to-[#fed455]" />
+
+      <main className="max-w-3xl mx-auto min-h-screen bg-[#ffffff] shadow-[0_0_50px_-15px_rgba(254,212,85,0.15)] overflow-hidden flex flex-col relative border-x border-[#fbf7e8]">
+        
+        {/* Header 區域 - 明亮黃色漸層背景 */}
+        <header className="relative pt-20 pb-12 px-6 text-center overflow-hidden">
+          {/* 背景層：使用指定的黃色漸層 */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#fed455] to-[#fee9a7] z-0" />
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 z-0 mix-blend-overlay" />
+           
+          <div className="relative z-10">
+            {/* 調整：增加 onClick，讓點擊標題也能回到首頁 */}
+            <h1 
+              onClick={() => handleMainTabClick('home')}
+              className="text-4xl md:text-5xl font-serif font-medium text-white tracking-[0.2em] mb-3 drop-shadow-md cursor-pointer hover:opacity-90 transition-opacity"
+            >
+              Yseulto.art
+            </h1>
+            <div className="flex items-center justify-center gap-4 mb-6">
+               <span className="h-[1px] w-8 bg-white/70"></span>
+               {/* 調整：增加 drop-shadow-md 與 font-medium，讓陰影立體效果更接近大標題 */}
+               <p className="text-white text-lg tracking-[0.4em] uppercase font-medium drop-shadow-md">
+                 審美藝術
+               </p>
+               <span className="h-[1px] w-8 bg-white/70"></span>
+            </div>
+
+            {/* 新增：將首頁按鈕移至此處 */}
+            <div className="mb-8 animate-fadeIn">
+               <button 
+                 onClick={() => handleMainTabClick('home')}
+                 className={`
+                   inline-flex items-center gap-2 px-6 py-2 rounded-full 
+                   border border-white/50 text-white 
+                   bg-white/10 backdrop-blur-[2px]
+                   hover:bg-white hover:text-[#b08d55] hover:border-white
+                   transition-all duration-300 text-sm tracking-widest shadow-sm
+                   ${mainNav === 'home' ? 'bg-white text-[#b08d55] font-medium' : ''}
+                 `}
+               >
+                 <Home className="w-4 h-4" />
+                 <span>進入首頁</span>
+               </button>
+            </div>
+
+            {/* 社交按鈕群組 - 圓邊設計 + 漸層Hover */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <SocialButton 
+                href="https://www.instagram.com/yseulto.art/"
+                icon={<Instagram className="w-5 h-5" />}
+                label="INSTAGRAM"
+                colorClass="text-white"
+                borderColorClass="border-transparent"
+                bgColorClass="bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] hover:opacity-90 shadow-lg"
+              />
+              <SocialButton 
+                href="https://www.facebook.com/profile.php?id=100090024147720"
+                icon={<Facebook className="w-5 h-5" />}
+                label="FACEBOOK"
+                colorClass="text-white"
+                borderColorClass="border-transparent"
+                bgColorClass="bg-[#1877F2] hover:bg-[#166fe5] shadow-lg"
+              />
+              <SocialButton 
+                href="https://lin.ee/ywqbFuu"
+                icon={<LineIcon className="w-5 h-5" />}
+                label="預約/諮詢"
+                colorClass="text-white"
+                borderColorClass="border-transparent"
+                bgColorClass="bg-[#06C755] hover:bg-[#05b64d] shadow-lg"
+              />
+            </div>
+          </div>
+        </header>
+
+        {/* 主導覽列 (Sticky Tabs) */}
+        <nav className="sticky top-0 z-50 bg-[#ffffff]/95 backdrop-blur-md border-y border-[#fee9a7] shadow-sm">
+          <div className="flex overflow-x-auto no-scrollbar py-3 px-4 md:justify-center gap-2 md:gap-4">
+            {mainTabs.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = mainNav === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => handleMainTabClick(tab.id)}
+                  className={`
+                    group flex items-center gap-2 px-4 py-2.5 rounded-full text-xs md:text-sm whitespace-nowrap transition-all duration-300 border
+                    ${isActive 
+                      ? 'bg-[#fed455] text-white border-[#fed455] shadow-md' 
+                      : 'bg-transparent text-[#99815c] border-transparent hover:bg-[#fff9e6] hover:text-[#b08d55]'
+                    }
+                  `}
+                >
+                  <Icon className={`w-3.5 h-3.5 transition-colors ${isActive ? 'text-white' : 'text-[#dcb96a] group-hover:text-[#b08d55]'}`} />
+                  <span className="tracking-wide">{tab.label}</span>
+                  {tab.hasSubmenu && (
+                    <ChevronDown className={`w-3 h-3 ml-1 transition-transform duration-300 ${isActive ? 'rotate-180 text-white' : 'text-[#dcb96a]'}`} />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* 服務項目子選單 */}
+          {mainNav === 'services' && (
+            <div className="bg-[#fff9e6] border-b border-[#fee9a7] animate-fadeIn origin-top">
+              <div className="flex overflow-x-auto no-scrollbar py-2.5 px-4 md:justify-center gap-2">
+                {serviceSubTabs.map((subTab) => {
+                  const SubIcon = subTab.icon;
+                  const isSubActive = activeTab === subTab.id;
+                  return (
+                     <button
+                       key={subTab.id}
+                       onClick={() => setActiveTab(subTab.id)}
+                       className={`
+                         flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs whitespace-nowrap transition-all duration-200 border
+                         ${isSubActive 
+                           ? 'bg-[#fed455] text-white border-[#fed455] shadow-sm font-medium' 
+                           : 'bg-white text-[#99815c] border-[#fee9a7] hover:border-[#fed455] hover:text-[#b08d55]'
+                         }
+                       `}
+                     >
+                       <SubIcon className="w-3 h-3" />
+                       {subTab.label}
+                     </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </nav>
+
+        {/* 內容顯示區 */}
+        <div className="flex-1 px-4 py-12 md:px-12 bg-[#ffffff]">
+          <div className="max-w-3xl mx-auto">
+            {renderContent()}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <footer className="bg-[#fff9e6] text-[#99815c] py-12 text-center border-t border-[#fee9a7]">
+          {/* 移除旋轉方塊，改為簡約的品牌展示 */}
+          <div className="mb-2">
+             <p className="font-serif text-lg tracking-widest text-[#99815c]">Yseulto.art</p>
+             <p className="text-sm tracking-widest text-[#99815c] mt-1">審美藝術</p>
+          </div>
+          <p className="text-[10px] uppercase tracking-[0.2em] opacity-60 mt-6">© 2024 All Rights Reserved.</p>
+        </footer>
+
+        {/* 燈箱顯示 */}
+        {lightboxOpen && selectedAlbum && (
+          <Lightbox 
+            album={selectedAlbum} 
+            onClose={closeLightbox} 
+          />
+        )}
+
+      </main>
+
+      <style dangerouslySetInnerHTML={{__html: `
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(-5px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-out forwards;
+        }
+      `}} />
+    </div>
+  );
+}
