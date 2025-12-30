@@ -21,6 +21,9 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-fadeIn { animation: fadeIn 0.3s ease-out forwards; }
+        
+        /* 增加 Lightbox 的觸控體驗 */
+        .lightbox-touch-area { touch-action: pan-y pinch-zoom; }
     </style>
 </head>
 <body class="bg-[#fffefc]">
@@ -29,7 +32,7 @@
 
     <script type="text/babel">
         // 解構 React Hooks
-        const { useState, useEffect, useCallback } = React;
+        const { useState, useEffect, useRef, useCallback } = React;
 
         // ------------------- 圖示組件定義 -------------------
         const IconBase = ({ d, className }) => (
@@ -43,9 +46,7 @@
         const ShieldAlert = (props) => <IconBase {...props} d={<><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="M12 8v4"/><path d="M12 16h.01"/></>} />;
         const ChevronRight = (props) => <IconBase {...props} d={<path d="m9 18 6-6-6-6"/>} />;
         const ChevronDown = (props) => <IconBase {...props} d={<path d="m6 9 6 6 6-6"/>} />;
-        const ChevronUp = (props) => <IconBase {...props} d={<path d="m18 15-6-6-6 6"/>} />;
         const ChevronLeft = (props) => <IconBase {...props} d={<path d="m15 18-6-6 6-6"/>} />;
-        const Menu = (props) => <IconBase {...props} d={<><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></>} />;
         const X = (props) => <IconBase {...props} d={<><path d="M18 6 6 18"/><path d="m6 6 12 12"/></>} />;
         const ImageIcon = (props) => <IconBase {...props} d={<><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></>} />;
         const PlayCircle = (props) => <IconBase {...props} d={<><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></>} />;
@@ -58,12 +59,9 @@
         const ShoppingBag = (props) => <IconBase {...props} d={<><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></>} />;
         const Sparkles = (props) => <IconBase {...props} d={<path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275Z"/>} />;
         const DollarSign = (props) => <IconBase {...props} d={<><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></>} />;
-        const FileText = (props) => <IconBase {...props} d={<><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></>} />;
         const Home = (props) => <IconBase {...props} d={<><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></>} />;
         const HelpCircle = (props) => <IconBase {...props} d={<><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></>} />;
-        const Video = (props) => <IconBase {...props} d={<><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></>} />;
         const Star = (props) => <IconBase {...props} d={<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>} />;
-        const Copy = (props) => <IconBase {...props} d={<><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></>} />;
         const ThumbsUp = (props) => <IconBase {...props} d={<><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"/></>} />;
 
         const LineIcon = ({ className = "w-6 h-6" }) => (
@@ -426,7 +424,7 @@
             category: "唇", 
             items: [
               { name: "透亮霧唇", price: "$ 9,800", note: "包含 6 個月內調整唇色" },
-              { name: "光感淡色", price: "$ 6,800", note: "調整暗沈/卡色\n非上色，含3個月內淡色" },
+              { name: "光感淡色", price: "$ 6,800", note: "調整暗沈/卡色\n非上色，含3個月內淡色 },
             ]
           },
           {
@@ -565,6 +563,34 @@
         // 燈箱組件 (Lightbox)
         const Lightbox = ({ album, initialIndex = 0, onClose }) => {
           const [currentIndex, setCurrentIndex] = useState(initialIndex);
+          const [touchStart, setTouchStart] = useState(null);
+          const [touchEnd, setTouchEnd] = useState(null);
+
+          // 最小滑動距離
+          const minSwipeDistance = 50;
+
+          const onTouchStart = (e) => {
+            setTouchEnd(null); // Reset
+            setTouchStart(e.targetTouches[0].clientX);
+          };
+
+          const onTouchMove = (e) => {
+            setTouchEnd(e.targetTouches[0].clientX);
+          };
+
+          const onTouchEnd = () => {
+            if (!touchStart || !touchEnd) return;
+            const distance = touchStart - touchEnd;
+            const isLeftSwipe = distance > minSwipeDistance;
+            const isRightSwipe = distance < -minSwipeDistance;
+
+            if (isLeftSwipe) {
+              nextImage();
+            }
+            if (isRightSwipe) {
+              prevImage();
+            }
+          };
 
           // 鍵盤導航支援
           useEffect(() => {
@@ -595,9 +621,12 @@
 
           return (
             <div 
-              className="fixed inset-0 z-[100] bg-black/70 flex items-center justify-center p-4 backdrop-blur-sm"
+              className="fixed inset-0 z-[100] bg-black/85 flex items-center justify-center p-4 backdrop-blur-sm lightbox-touch-area"
               onClick={onClose}
               onContextMenu={(e) => e.preventDefault()} 
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
             >
               <div 
                 className="relative bg-transparent w-full md:w-1/3 max-h-[90vh] flex flex-col items-center justify-center select-none"
@@ -605,7 +634,7 @@
               >
                 <button 
                   onClick={onClose}
-                  className="absolute -top-12 right-0 text-white/80 hover:text-white transition-colors"
+                  className="absolute -top-12 right-0 text-white/80 hover:text-white transition-colors p-2"
                 >
                   <X className="w-8 h-8" />
                 </button>
@@ -631,12 +660,13 @@
                       className="w-full h-auto max-h-[80vh] object-contain mx-auto select-none"
                       referrerPolicy="no-referrer"
                       draggable="false"
+                      loading="eager"
                       onContextMenu={(e) => e.preventDefault()}
                     />
                   )}
                   
-                  <div className="absolute top-[66%] left-0 right-0 text-center pointer-events-none select-none z-10">
-                    <span className="text-white/60 text-xs md:text-sm font-serif tracking-[0.3em] drop-shadow-md uppercase bg-black/10 px-2 py-1 rounded-full backdrop-blur-[1px]">
+                  <div className="absolute top-[85%] left-0 right-0 text-center pointer-events-none select-none z-10">
+                    <span className="text-white/80 text-xs md:text-sm font-serif tracking-[0.3em] drop-shadow-md uppercase bg-black/40 px-3 py-1.5 rounded-full backdrop-blur-[2px]">
                       Yseulto.art 審美藝術
                     </span>
                   </div>
@@ -645,15 +675,17 @@
                     <>
                       <button 
                         onClick={prevImage}
-                        className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 text-white/70 hover:bg-black/40 hover:text-white transition-all opacity-0 group-hover:opacity-100 z-20"
+                        className="absolute left-0 top-1/2 -translate-y-1/2 p-4 md:p-2 text-white/70 hover:text-white transition-all z-20"
+                        style={{ background: 'linear-gradient(90deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 100%)', height: '100px', display: 'flex', alignItems: 'center' }}
                       >
-                        <ChevronLeft className="w-6 h-6" />
+                        <ChevronLeft className="w-8 h-8 md:w-6 md:h-6 drop-shadow-lg" />
                       </button>
                       <button 
                         onClick={nextImage}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 text-white/70 hover:bg-black/40 hover:text-white transition-all opacity-0 group-hover:opacity-100 z-20"
+                        className="absolute right-0 top-1/2 -translate-y-1/2 p-4 md:p-2 text-white/70 hover:text-white transition-all z-20"
+                        style={{ background: 'linear-gradient(-90deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 100%)', height: '100px', display: 'flex', alignItems: 'center' }}
                       >
-                        <ChevronRight className="w-6 h-6" />
+                        <ChevronRight className="w-8 h-8 md:w-6 md:h-6 drop-shadow-lg" />
                       </button>
                     </>
                   )}
@@ -663,14 +695,14 @@
                       {album.media.map((_, idx) => (
                         <div 
                           key={idx}
-                          className={`h-1 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-4 bg-white' : 'w-1.5 bg-white/40'}`}
+                          className={`h-1.5 rounded-full transition-all duration-300 drop-shadow-md ${idx === currentIndex ? 'w-4 bg-white' : 'w-1.5 bg-white/40'}`}
                         />
                       ))}
                     </div>
                   )}
                 </div>
 
-                <div className="mt-4 text-center">
+                <div className="mt-6 text-center">
                   <h4 className="text-white font-serif tracking-widest text-lg">{album.title}</h4>
                   <p className="text-white/60 text-xs mt-1 uppercase tracking-wide">{album.category}</p>
                 </div>
@@ -679,23 +711,34 @@
           );
         };
 
-        const SocialButton = ({ href, icon: Icon, label, colorClass, bgColorClass, borderColorClass }) => (
+        const SocialButtonCircle = ({ href, icon: Icon, bgColorClass, colorClass }) => (
           <a 
             href={href} 
             target="_blank" 
             rel="noopener noreferrer"
             className={`
-              flex items-center justify-center gap-1.5 px-4 py-2 rounded-full
-              transform transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl
-              ${bgColorClass} ${colorClass} ${borderColorClass} border auto
-              group overflow-hidden relative
+              w-10 h-10 flex items-center justify-center rounded-full shadow-md
+              transform transition-all duration-300 hover:scale-110 active:scale-95
+              ${bgColorClass} ${colorClass}
             `}
           >
-            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-            <span className="relative z-10 flex items-center gap-1.5">
-              {Icon}
-              <span className="font-medium tracking-wide text-[10px] md:text-xs">{label}</span>
-            </span>
+            {Icon}
+          </a>
+        );
+
+        const SocialButtonPill = ({ href, icon: Icon, label, bgColorClass, colorClass }) => (
+          <a 
+            href={href} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className={`
+              h-10 px-6 flex items-center justify-center gap-2 rounded-full shadow-md
+              transform transition-all duration-300 hover:scale-105 active:scale-95
+              ${bgColorClass} ${colorClass}
+            `}
+          >
+             {Icon}
+             <span className="font-medium tracking-wide text-xs">{label}</span>
           </a>
         );
 
@@ -733,20 +776,20 @@
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full flex items-center justify-between py-5 px-2 text-left hover:bg-[#fffefb]/50 transition-colors group"
               >
-                <h4 className="font-medium text-[#433422] tracking-wider text-sm md:text-base group-hover:text-[#b08d55] transition-colors flex items-center gap-2">
-                    {title.includes("Q：") && <HelpCircle className="w-4 h-4 text-[#fed455]" />}
-                    {title}
+                <h4 className="font-medium text-[#433422] tracking-wider text-sm md:text-base group-hover:text-[#b08d55] transition-colors flex items-center gap-2 flex-1 pr-4">
+                    {title.includes("Q：") && <HelpCircle className="w-4 h-4 text-[#fed455] flex-shrink-0" />}
+                    <span>{title}</span>
                 </h4>
                 <div className={`
-                  w-8 h-8 rounded-full border border-[#fed455] flex items-center justify-center
+                  w-8 h-8 rounded-full border border-[#fed455] flex items-center justify-center flex-shrink-0
                   transition-all duration-300 ${isOpen ? 'bg-[#fed455] text-white rotate-180' : 'text-[#fed455]'}
                 `}>
                   <ChevronDown className="w-4 h-4" />
                 </div>
               </button>
               <div className={`
-                overflow-hidden transition-all duration-300 ease-in-out
-                ${isOpen ? 'max-h-[800px] opacity-100 pb-6' : 'max-h-0 opacity-0'}
+                overflow-hidden transition-all duration-500 ease-in-out
+                ${isOpen ? 'max-h-[2000px] opacity-100 pb-6' : 'max-h-0 opacity-0'}
               `}>
                 <div className="px-4 text-[#594a42]">
                   {children}
@@ -1488,39 +1531,37 @@
                         </button>
                     </div>
 
-                    {/* 社交按鈕群組 - 修正為一行排列 */}
-                    <div className="flex flex-row flex-wrap items-center justify-center gap-2 md:gap-3">
-                      <SocialButton 
+                    {/* 社交按鈕群組 - 手機版併排優化 */}
+                    <div className="flex flex-row items-center justify-center gap-4">
+                      {/* IG 圓形按鈕 */}
+                      <SocialButtonCircle 
                         href="https://www.instagram.com/yseulto.art/"
-                        icon={<Instagram className="w-4 h-4 md:w-5 md:h-5" />}
-                        label="INSTAGRAM"
+                        icon={<Instagram className="w-5 h-5" />}
                         colorClass="text-white"
-                        borderColorClass="border-transparent"
-                        bgColorClass="bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] hover:opacity-90 shadow-lg"
+                        bgColorClass="bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888]"
                       />
-                      <SocialButton 
+                      {/* FB 圓形按鈕 */}
+                      <SocialButtonCircle 
                         href="https://www.facebook.com/profile.php?id=100090024147720"
-                        icon={<Facebook className="w-4 h-4 md:w-5 md:h-5" />}
-                        label="FACEBOOK"
+                        icon={<Facebook className="w-5 h-5" />}
                         colorClass="text-white"
-                        borderColorClass="border-transparent"
-                        bgColorClass="bg-[#1877F2] hover:bg-[#166fe5] shadow-lg"
+                        bgColorClass="bg-[#1877F2]"
                       />
-                      <SocialButton 
+                      {/* LINE 預約按鈕 - 保持長條形文字 */}
+                      <SocialButtonPill 
                         href="https://lin.ee/ywqbFuu"
-                        icon={<LineIcon className="w-4 h-4 md:w-5 md:h-5" />}
+                        icon={<LineIcon className="w-5 h-5" />}
                         label="預約/諮詢"
                         colorClass="text-white"
-                        borderColorClass="border-transparent"
-                        bgColorClass="bg-[#06C755] hover:bg-[#05b64d] shadow-lg"
+                        bgColorClass="bg-[#06C755]"
                       />
                     </div>
                   </div>
                 </header>
 
-                {/* 主導覽列 */}
+                {/* 主導覽列 - 修正為自動換行顯示全部 */}
                 <nav className="sticky top-0 z-50 bg-[#ffffff]/95 backdrop-blur-md border-y border-[#fee9a7] shadow-sm">
-                  <div className="flex overflow-x-auto no-scrollbar py-3 px-4 md:justify-center gap-2 md:gap-4">
+                  <div className="flex flex-wrap justify-center py-3 px-2 gap-2">
                     {mainTabs.map((tab) => {
                       const Icon = tab.icon;
                       const isActive = mainNav === tab.id;
@@ -1529,7 +1570,7 @@
                           key={tab.id}
                           onClick={() => handleMainTabClick(tab.id)}
                           className={`
-                            group flex items-center gap-2 px-4 py-2.5 rounded-full text-xs md:text-sm whitespace-nowrap transition-all duration-300 border
+                            group flex items-center gap-1.5 px-3 py-2 rounded-full text-xs md:text-sm whitespace-nowrap transition-all duration-300 border
                             ${isActive 
                               ? 'bg-[#fed455] text-white border-[#fed455] shadow-md' 
                               : 'bg-transparent text-[#99815c] border-transparent hover:bg-[#fff9e6] hover:text-[#b08d55]'
@@ -1548,7 +1589,7 @@
 
                   {mainNav === 'services' && (
                     <div className="bg-[#fff9e6] border-b border-[#fee9a7] animate-fadeIn origin-top">
-                      <div className="flex overflow-x-auto no-scrollbar py-2.5 px-4 md:justify-center gap-2">
+                      <div className="flex flex-wrap justify-center py-2.5 px-2 gap-2">
                         {serviceSubTabs.map((subTab) => {
                           const SubIcon = subTab.icon;
                           const isSubActive = activeTab === subTab.id;
@@ -1557,7 +1598,7 @@
                                 key={subTab.id}
                                 onClick={() => setActiveTab(subTab.id)}
                                 className={`
-                                  flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs whitespace-nowrap transition-all duration-200 border
+                                  flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-all duration-200 border
                                   ${isSubActive 
                                     ? 'bg-[#fed455] text-white border-[#fed455] shadow-sm font-medium' 
                                     : 'bg-white text-[#99815c] border-[#fee9a7] hover:border-[#fed455] hover:text-[#b08d55]'
